@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Application.Interfaces;
 
-namespace Api.Services;
+namespace Server.Services;
 
 public class CurrentUser : IUser
 {

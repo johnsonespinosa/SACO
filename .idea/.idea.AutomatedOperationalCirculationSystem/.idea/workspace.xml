@@ -10,57 +10,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f708a54c-77a1-4f82-8b61-d41600ee31b7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.vs/AutomatedOperationalCirculationSystem/DesignTimeBuild/.dtbcache.v2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.vs/AutomatedOperationalCirculationSystem/v17/.futdcache.v2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.vs/AutomatedOperationalCirculationSystem/v17/.suo" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.vs/AutomatedOperationalCirculationSystem/v17/DocumentLayout.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.vs/ProjectEvaluation/automatedoperationalcirculationsystem.metadata.v9.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.vs/ProjectEvaluation/automatedoperationalcirculationsystem.projects.v9.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.vs/ProjectEvaluation/automatedoperationalcirculationsystem.strings.v9.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/DTOs/Circulations/CirculationResponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/DTOs/Citizenships/CitizenshipResponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/DTOs/Expirations/ExpirationResponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/DTOs/OperationalCirculations/CreateOperationalCirculationRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/DTOs/OperationalCirculations/OperationalCirculationResponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/DTOs/OperationalCirculations/UpdateOperationalCirculationRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/DTOs/Organs/OrganResponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/Interfaces/ICirculationService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/Interfaces/ICitizenshipService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/Interfaces/IExpirationService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/Interfaces/IOperationalCirculationService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/Interfaces/IOrganService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/Services/CirculationService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/Services/CitizenshipService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/Services/ExpirationService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/Services/OperationalCirculationService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/Services/OrganService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/Specifications/GetAllOperationalCirculationsSpecification.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/UseCases/Circulations/Queries/GetAll/GetAllCirculationsQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/UseCases/Citizenships/Queries/GetAll/GetAllCitizenshipsQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/UseCases/Expirations/Queries/GetAll/GetAllExpirationsQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/UseCases/OperationalCirculations/Commands/Create/CreateOperationalCirculationCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/UseCases/OperationalCirculations/Commands/Create/CreateOperationalCirculationCommandValidator.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/UseCases/OperationalCirculations/Commands/Delete/DeleteOperationalCirculationCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/UseCases/OperationalCirculations/Commands/Update/UpdateOperationalCirculationCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/UseCases/OperationalCirculations/Commands/Update/UpdateOperationalCirculationCommandValidator.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/UseCases/OperationalCirculations/Queries/GetAll/GetAllOperationalCirculationQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Application/UseCases/Organs/Queries/GetAll/GetAllOrgansQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Persistence/Migrations/20250123045713_Initial.Designer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Persistence/Migrations/20250123045713_Initial.cs" afterDir="false" />
+    <list default="true" id="f708a54c-77a1-4f82-8b61-d41600ee31b7" name="Changes" comment="Implementing Use Cases">
+      <change afterPath="$PROJECT_DIR$/Server/Commons/Errors/ProblemDetailFactory.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/Commons/Http/HttpContextItemKey.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/Controllers/Bases/CustomControllerBase.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/Controllers/Bases/ErrorsController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/Controllers/CirculationsController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/Controllers/CitizenshipsController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/Controllers/ExpirationsController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/Controllers/OperationalCirculationsController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.AutomatedOperationalCirculationSystem/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.AutomatedOperationalCirculationSystem/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Application.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Application.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/DependencyInjection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/DependencyInjection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/Entities/Circulation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Entities/Circulation.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/Entities/Citizenship.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Entities/Citizenship.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Identity/Migrations/20250123024904_Initial.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Identity/Migrations/20250123045641_Initial.Designer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Identity/Migrations/20250123024904_Initial.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Identity/Migrations/20250123045641_Initial.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Identity/Migrations/ApplicationIdentityDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Identity/Migrations/ApplicationIdentityDbContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Configurations/CirculationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/Configurations/CirculationConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Configurations/CitizenshipConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/Configurations/CitizenshipConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/20250123024939_Initial.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/20250123024939_Initial.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/Controllers/WeatherForecastController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/DependencyInjection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/DependencyInjection.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/Server.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Server.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/Services/CurrentUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Services/CurrentUser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/WeatherForecast.cs" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,7 +149,7 @@
       <workItem from="1737586902345" duration="11146000" />
       <workItem from="1737598370469" duration="3242000" />
       <workItem from="1737607537190" duration="3513000" />
-      <workItem from="1737611231233" duration="2938000" />
+      <workItem from="1737611231233" duration="5620000" />
     </task>
     <task id="LOCAL-00001" summary="Creating the project">
       <option name="closed" value="true" />
@@ -211,7 +175,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737600749280</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Implementing Use Cases">
+      <option name="closed" value="true" />
+      <created>1737641621526</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1737641621526</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -263,6 +235,7 @@
     <MESSAGE value="Creating the project" />
     <MESSAGE value="Configuring the Application Layer" />
     <MESSAGE value="Defining and configuring domain entities" />
-    <option name="LAST_COMMIT_MESSAGE" value="Defining and configuring domain entities" />
+    <MESSAGE value="Implementing Use Cases" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementing Use Cases" />
   </component>
 </project>
