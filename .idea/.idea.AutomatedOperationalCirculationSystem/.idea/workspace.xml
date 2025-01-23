@@ -10,21 +10,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f708a54c-77a1-4f82-8b61-d41600ee31b7" name="Changes" comment="Implementing Use Cases">
-      <change afterPath="$PROJECT_DIR$/Server/Commons/Errors/ProblemDetailFactory.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Commons/Http/HttpContextItemKey.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Controllers/Bases/CustomControllerBase.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Controllers/Bases/ErrorsController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Controllers/CirculationsController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Controllers/CitizenshipsController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Controllers/ExpirationsController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Controllers/OperationalCirculationsController.cs" afterDir="false" />
+    <list default="true" id="f708a54c-77a1-4f82-8b61-d41600ee31b7" name="Changes" comment="Creating Controllers">
+      <change afterPath="$PROJECT_DIR$/Application/Interfaces/IApplicationLogger.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Identity/Seeds/DatabaseInitializer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/Middlewares/GlobalExceptionHandlerMiddleware.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.AutomatedOperationalCirculationSystem/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.AutomatedOperationalCirculationSystem/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Controllers/WeatherForecastController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/DependencyInjection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/DependencyInjection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Server.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Server.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/Services/CurrentUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Services/CurrentUser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/WeatherForecast.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Domain/Commons/BaseAuditableEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Commons/BaseAuditableEntity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Persistence/Persistence.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/Persistence.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/Server/appsettings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,7 +143,7 @@
       <workItem from="1737586902345" duration="11146000" />
       <workItem from="1737598370469" duration="3242000" />
       <workItem from="1737607537190" duration="3513000" />
-      <workItem from="1737611231233" duration="5620000" />
+      <workItem from="1737611231233" duration="8210000" />
     </task>
     <task id="LOCAL-00001" summary="Creating the project">
       <option name="closed" value="true" />
@@ -183,7 +177,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737641621526</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Creating Controllers">
+      <option name="closed" value="true" />
+      <created>1737644478527</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1737644478527</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,6 +238,7 @@
     <MESSAGE value="Configuring the Application Layer" />
     <MESSAGE value="Defining and configuring domain entities" />
     <MESSAGE value="Implementing Use Cases" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementing Use Cases" />
+    <MESSAGE value="Creating Controllers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Creating Controllers" />
   </component>
 </project>
