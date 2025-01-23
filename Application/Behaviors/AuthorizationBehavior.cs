@@ -1,5 +1,4 @@
 using System.Reflection;
-using Application.Exceptions;
 using Application.Interfaces;
 using Application.Security;
 
@@ -59,7 +58,7 @@ public class AuthorizationBehavior<TRequest, TResponse>(IUser user, IIdentitySer
         }
 
         if (!authorized)
-            throw new ForbiddenAccessException(message: "El usuario no tiene el rol requerido.");
+            throw new Exception(message: "El usuario no tiene el rol requerido.");
     }
 
     private async Task AuthorizeByPolicies(IEnumerable<AuthorizeAttribute> attributes)
@@ -74,7 +73,7 @@ public class AuthorizationBehavior<TRequest, TResponse>(IUser user, IIdentitySer
         {
             var authorized = await _identityService.AuthorizeAsync(_user.Id!, policy);
             if (!authorized)
-                throw new ForbiddenAccessException(message: $"El usuario no está autorizado para la política: {policy}");
+                throw new Exception(message: $"El usuario no está autorizado para la política: {policy}");
         }
     }
 }
