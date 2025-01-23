@@ -13,11 +13,11 @@ namespace Identity.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "IDENTITY");
+                name: "Identity");
 
             migrationBuilder.CreateTable(
                 name: "Roles",
-                schema: "IDENTITY",
+                schema: "Identity",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
@@ -32,7 +32,7 @@ namespace Identity.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Users",
-                schema: "IDENTITY",
+                schema: "Identity",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
@@ -58,7 +58,7 @@ namespace Identity.Migrations
 
             migrationBuilder.CreateTable(
                 name: "RoleClaims",
-                schema: "IDENTITY",
+                schema: "Identity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -73,7 +73,7 @@ namespace Identity.Migrations
                     table.ForeignKey(
                         name: "FK_RoleClaims_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "IDENTITY",
+                        principalSchema: "Identity",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -81,7 +81,7 @@ namespace Identity.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UserClaims",
-                schema: "IDENTITY",
+                schema: "Identity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -96,7 +96,7 @@ namespace Identity.Migrations
                     table.ForeignKey(
                         name: "FK_UserClaims_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "IDENTITY",
+                        principalSchema: "Identity",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -104,7 +104,7 @@ namespace Identity.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UserLogins",
-                schema: "IDENTITY",
+                schema: "Identity",
                 columns: table => new
                 {
                     LoginProvider = table.Column<string>(type: "text", nullable: false),
@@ -118,7 +118,7 @@ namespace Identity.Migrations
                     table.ForeignKey(
                         name: "FK_UserLogins_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "IDENTITY",
+                        principalSchema: "Identity",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -126,7 +126,7 @@ namespace Identity.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UserRoles",
-                schema: "IDENTITY",
+                schema: "Identity",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "text", nullable: false),
@@ -138,14 +138,14 @@ namespace Identity.Migrations
                     table.ForeignKey(
                         name: "FK_UserRoles_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "IDENTITY",
+                        principalSchema: "Identity",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserRoles_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "IDENTITY",
+                        principalSchema: "Identity",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -153,7 +153,7 @@ namespace Identity.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UserTokens",
-                schema: "IDENTITY",
+                schema: "Identity",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "text", nullable: false),
@@ -167,7 +167,7 @@ namespace Identity.Migrations
                     table.ForeignKey(
                         name: "FK_UserTokens_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "IDENTITY",
+                        principalSchema: "Identity",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -175,44 +175,44 @@ namespace Identity.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
-                schema: "IDENTITY",
+                schema: "Identity",
                 table: "RoleClaims",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
-                schema: "IDENTITY",
+                schema: "Identity",
                 table: "Roles",
                 column: "NormalizedName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
-                schema: "IDENTITY",
+                schema: "Identity",
                 table: "UserClaims",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserLogins_UserId",
-                schema: "IDENTITY",
+                schema: "Identity",
                 table: "UserLogins",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
-                schema: "IDENTITY",
+                schema: "Identity",
                 table: "UserRoles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                schema: "IDENTITY",
+                schema: "Identity",
                 table: "Users",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                schema: "IDENTITY",
+                schema: "Identity",
                 table: "Users",
                 column: "NormalizedUserName",
                 unique: true);
@@ -223,31 +223,31 @@ namespace Identity.Migrations
         {
             migrationBuilder.DropTable(
                 name: "RoleClaims",
-                schema: "IDENTITY");
+                schema: "Identity");
 
             migrationBuilder.DropTable(
                 name: "UserClaims",
-                schema: "IDENTITY");
+                schema: "Identity");
 
             migrationBuilder.DropTable(
                 name: "UserLogins",
-                schema: "IDENTITY");
+                schema: "Identity");
 
             migrationBuilder.DropTable(
                 name: "UserRoles",
-                schema: "IDENTITY");
+                schema: "Identity");
 
             migrationBuilder.DropTable(
                 name: "UserTokens",
-                schema: "IDENTITY");
+                schema: "Identity");
 
             migrationBuilder.DropTable(
                 name: "Roles",
-                schema: "IDENTITY");
+                schema: "Identity");
 
             migrationBuilder.DropTable(
                 name: "Users",
-                schema: "IDENTITY");
+                schema: "Identity");
         }
     }
 }

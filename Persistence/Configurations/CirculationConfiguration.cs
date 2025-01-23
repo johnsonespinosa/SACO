@@ -12,7 +12,7 @@ public class CirculationConfiguration : IEntityTypeConfiguration<Circulation>
 
         builder.ToTable("Circulations");
 
-        builder.Property(circulationCode => circulationCode.Code)
+        builder.Property(circulationCode => circulationCode.Abbreviation)
             .HasMaxLength(4)
             .IsUnicode(false);
 
@@ -21,14 +21,14 @@ public class CirculationConfiguration : IEntityTypeConfiguration<Circulation>
             .IsUnicode(false);
 
         builder.HasData(
-            new Circulation { Id = Guid.NewGuid(), Code = "PE", Description = "PROHIBICION ENTRADA" },
-            new Circulation { Id = Guid.NewGuid(), Code = "PS", Description = "PROHIBICION SALIDA" },
-            new Circulation { Id = Guid.NewGuid(), Code = "DET", Description = "DETENCION" },
-            new Circulation { Id = Guid.NewGuid(), Code = "AE", Description = "AVISO ENTRADA" },
-            new Circulation { Id = Guid.NewGuid(), Code = "AS", Description = "AVISO SALIDA" },
-            new Circulation { Id = Guid.NewGuid(), Code = "DG", Description = "DROGAS" },
-            new Circulation { Id = Guid.NewGuid(), Code = "PE", Description = "AVISO ENT/SAL" },
-            new Circulation { Id = Guid.NewGuid(), Code = "PE", Description = "INTERES MIGRATORIO" },
-            new Circulation { Id = Guid.NewGuid(), Code = "PE", Description = "PERDIDA DOCUMENTO" });
+            new Circulation { Id = Guid.NewGuid(), Abbreviation = "PE", Description = "PROHIBICION ENTRADA" },
+            new Circulation { Id = Guid.NewGuid(), Abbreviation = "PS", Description = "PROHIBICION SALIDA" },
+            new Circulation { Id = Guid.NewGuid(), Abbreviation = "DET", Description = "DETENCION" },
+            new Circulation { Id = Guid.NewGuid(), Abbreviation = "AE", Description = "AVISO ENTRADA" },
+            new Circulation { Id = Guid.NewGuid(), Abbreviation = "AS", Description = "AVISO SALIDA" },
+            new Circulation { Id = Guid.NewGuid(), Abbreviation = "DG", Description = "DROGAS" },
+            new Circulation { Id = Guid.NewGuid(), Abbreviation = "PE", Description = "AVISO ENT/SAL" },
+            new Circulation { Id = Guid.NewGuid(), Abbreviation = "PE", Description = "INTERES MIGRATORIO" },
+            new Circulation { Id = Guid.NewGuid(), Abbreviation = "PE", Description = "PERDIDA DOCUMENTO" });
     }
 }

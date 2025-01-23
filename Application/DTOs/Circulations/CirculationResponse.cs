@@ -1,6 +1,6 @@
-namespace Domain.Entities;
+namespace Application.DTOs.Circulations;
 
-public sealed class Citizenship
+public class CirculationResponse
 {
     public Guid Id { get; init; }
     public required string Abbreviation { get; init; }

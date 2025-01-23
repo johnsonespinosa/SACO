@@ -10,13 +10,57 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f708a54c-77a1-4f82-8b61-d41600ee31b7" name="Changes" comment="Defining and configuring domain entities">
-      <change afterPath="$PROJECT_DIR$/Identity/Migrations/20250123024904_Initial.Designer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Identity/Migrations/20250123024904_Initial.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Identity/Migrations/ApplicationIdentityDbContextModelSnapshot.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Persistence/Migrations/20250123024939_Initial.Designer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Persistence/Migrations/20250123024939_Initial.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Persistence/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
+    <list default="true" id="f708a54c-77a1-4f82-8b61-d41600ee31b7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.vs/AutomatedOperationalCirculationSystem/DesignTimeBuild/.dtbcache.v2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.vs/AutomatedOperationalCirculationSystem/v17/.futdcache.v2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.vs/AutomatedOperationalCirculationSystem/v17/.suo" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.vs/AutomatedOperationalCirculationSystem/v17/DocumentLayout.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.vs/ProjectEvaluation/automatedoperationalcirculationsystem.metadata.v9.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.vs/ProjectEvaluation/automatedoperationalcirculationsystem.projects.v9.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.vs/ProjectEvaluation/automatedoperationalcirculationsystem.strings.v9.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/DTOs/Circulations/CirculationResponse.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/DTOs/Citizenships/CitizenshipResponse.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/DTOs/Expirations/ExpirationResponse.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/DTOs/OperationalCirculations/CreateOperationalCirculationRequest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/DTOs/OperationalCirculations/OperationalCirculationResponse.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/DTOs/OperationalCirculations/UpdateOperationalCirculationRequest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/DTOs/Organs/OrganResponse.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Interfaces/ICirculationService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Interfaces/ICitizenshipService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Interfaces/IExpirationService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Interfaces/IOperationalCirculationService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Interfaces/IOrganService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Services/CirculationService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Services/CitizenshipService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Services/ExpirationService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Services/OperationalCirculationService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Services/OrganService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Specifications/GetAllOperationalCirculationsSpecification.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/Circulations/Queries/GetAll/GetAllCirculationsQuery.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/Citizenships/Queries/GetAll/GetAllCitizenshipsQuery.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/Expirations/Queries/GetAll/GetAllExpirationsQuery.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/OperationalCirculations/Commands/Create/CreateOperationalCirculationCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/OperationalCirculations/Commands/Create/CreateOperationalCirculationCommandValidator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/OperationalCirculations/Commands/Delete/DeleteOperationalCirculationCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/OperationalCirculations/Commands/Update/UpdateOperationalCirculationCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/OperationalCirculations/Commands/Update/UpdateOperationalCirculationCommandValidator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/OperationalCirculations/Queries/GetAll/GetAllOperationalCirculationQuery.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/Organs/Queries/GetAll/GetAllOrgansQuery.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Persistence/Migrations/20250123045713_Initial.Designer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Persistence/Migrations/20250123045713_Initial.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.AutomatedOperationalCirculationSystem/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.AutomatedOperationalCirculationSystem/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Application.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Application.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/DependencyInjection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/DependencyInjection.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Domain/Entities/Circulation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Entities/Circulation.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Domain/Entities/Citizenship.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Entities/Citizenship.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Identity/Migrations/20250123024904_Initial.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Identity/Migrations/20250123045641_Initial.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Identity/Migrations/20250123024904_Initial.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Identity/Migrations/20250123045641_Initial.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Identity/Migrations/ApplicationIdentityDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Identity/Migrations/ApplicationIdentityDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Persistence/Configurations/CirculationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/Configurations/CirculationConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Persistence/Configurations/CitizenshipConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/Configurations/CitizenshipConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/20250123024939_Initial.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/20250123024939_Initial.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,7 +183,9 @@
       <updated>1737585066462</updated>
       <workItem from="1737585067593" duration="1080000" />
       <workItem from="1737586902345" duration="11146000" />
-      <workItem from="1737598370469" duration="2452000" />
+      <workItem from="1737598370469" duration="3242000" />
+      <workItem from="1737607537190" duration="3513000" />
+      <workItem from="1737611231233" duration="2938000" />
     </task>
     <task id="LOCAL-00001" summary="Creating the project">
       <option name="closed" value="true" />
@@ -174,6 +220,21 @@
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="master" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
