@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Application.Services;
 
-public class OrganService(IRepositoryAsync<Organ> repositoryAsync, Mapper mapper) : IOrganService
+public class OrganService(IRepositoryAsync<Organ> repositoryAsync, IMapper mapper) : IOrganService
 {
     public async Task<IReadOnlyCollection<OrganResponse>> GetAll()
     {

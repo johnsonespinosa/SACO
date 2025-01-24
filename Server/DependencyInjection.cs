@@ -24,6 +24,18 @@ public static class DependencyInjection
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+        
+        // CORS
+        services.AddCors(options =>
+        {
+            options.AddPolicy(name: "CorsPolicy", configurePolicy: builder =>
+            {
+                builder.WithOrigins("https://localhost:7163")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            });
+        });
 
         return services;
     }

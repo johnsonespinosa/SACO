@@ -27,6 +27,9 @@ builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddProblemDetails();
 builder.Services.AddServerServices();
 
+// Registrar el middleware global de excepciones
+builder.Services.AddScoped<GlobalExceptionHandlerMiddleware>();
+
 var app = builder.Build();
 
 // Configurar el pipeline de solicitudes HTTP
@@ -34,8 +37,15 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage(); // Esto es solo para desarrollo
+}
+else
+{
+    app.UseExceptionHandler("/error");
 }
 
+app.UseCors();
+app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
@@ -49,3 +59,5 @@ app.MapControllers();
 await DatabaseInitializer.SeedAsync(app.Services);
 
 app.Run();
+
+public partial class Program { }

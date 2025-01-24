@@ -1,22 +1,40 @@
 using System.Reflection;
 using Application.Interfaces;
 using Domain.Entities;
+using Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Contexts;
 
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
+    private readonly AuditableEntityInterceptor _auditableEntityInterceptor = null!;
+    private readonly DispatchDomainEventsInterceptor _domainEventsInterceptor = null!;
+    
+    // Constructor para inyección de dependencias
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
+        AuditableEntityInterceptor auditableEntityInterceptor,
+        DispatchDomainEventsInterceptor domainEventsInterceptor) : base(options)
+    {
+        _auditableEntityInterceptor = auditableEntityInterceptor ??
+                                      throw new ArgumentNullException(nameof(auditableEntityInterceptor));
+        _domainEventsInterceptor = domainEventsInterceptor ??
+                                   throw new ArgumentNullException(nameof(domainEventsInterceptor));
+    }
+    
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){}
+    
     public DbSet<Circulation> Circulations => Set<Circulation>();
     public DbSet<Citizenship> Citizenships => Set<Citizenship>();
     public DbSet<Expiration> Expirations => Set<Expiration>();
     public DbSet<OperationalCirculation> OperationalCirculations => Set<OperationalCirculation>();
     public DbSet<Organ> Organs => Set<Organ>();
-
-    public ApplicationDbContext(){}
-
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){}
     
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.AddInterceptors(_auditableEntityInterceptor);
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

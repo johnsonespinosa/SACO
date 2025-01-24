@@ -99,5 +99,36 @@ public class OperationalCirculationConfiguration : IEntityTypeConfiguration<Oper
             builder.Property(operationalCirculation => operationalCirculation.LastModifiedBy).HasMaxLength(50);
             
             builder.Property(operationalCirculation => operationalCirculation.LastModified);
+
+            builder.HasData(new OperationalCirculation
+            {
+                    Id = Guid.NewGuid(),
+                    FileNumber = Guid.NewGuid()
+                            .ToString(),
+                    Citizenship = "Cubano/a",
+                    Instruction = "",
+                    Official = "Enerieda",
+                    Organ = "PTI",
+                    Section = "",
+                    CirculationType = "PROHIBICION ENTRADA",
+                    FirstName = "Pablo",
+                    SecondName = "Enrique",
+                    LastName1 = "Johnson",
+                    LastName2 = "Espinosa",
+                    BirthDate = new DateTimeOffset(year: 1999,
+                            month: 1,
+                            day: 13,
+                            hour: 0,
+                            minute: 0,
+                            second: 0,
+                            offset: TimeSpan.Zero),
+                    Phone1 = "54541079",
+                    Phone2 = "",
+                    Observations = "",
+                    CirculationDate = DateTimeOffset.Now,
+                    ExpirationDate = DateTimeOffset.Now,
+                    ReasonForCirculation = "",
+                    CreatedBy = "test",
+            });
         }
     }

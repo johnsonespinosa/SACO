@@ -6,6 +6,7 @@ using Domain.Entities;
 using Domain.Settings;
 using EntityFramework.Exceptions.PostgreSQL;
 using Identity.Contexts;
+using Identity.Repositories;
 using Identity.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
@@ -130,6 +131,9 @@ public static class DependencyInjection
             services.Configure<JwtSetting>(configuration.GetSection(key: "JwtSetting"));
 
             services.AddTransient<IIdentityService, IdentityService>();
+            services.AddScoped<ITokenManager, TokenManager>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
         
         return services;
     }

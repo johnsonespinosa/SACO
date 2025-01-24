@@ -10,13 +10,44 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f708a54c-77a1-4f82-8b61-d41600ee31b7" name="Changes" comment="Creating Controllers">
-      <change afterPath="$PROJECT_DIR$/Application/Interfaces/IApplicationLogger.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Identity/Seeds/DatabaseInitializer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/Middlewares/GlobalExceptionHandlerMiddleware.cs" afterDir="false" />
+    <list default="true" id="f708a54c-77a1-4f82-8b61-d41600ee31b7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/config/applicationhost.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Interfaces/ITokenManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Interfaces/IUserRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Interfaces/IUserService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/Mappings/MappingProfile.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/Users/Commands/Authenticate/AuthenticateUserCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/Users/Commands/Authenticate/AuthenticateUserCommandValidator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/Users/Commands/Create/CreateUserCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/Users/Commands/Create/CreateUserCommandValidator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/Users/Commands/Delete/DeleteUserCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/Users/Commands/Update/UpdateUserCommand.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/Users/Commands/Update/UpdateUserCommandValidator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Application/UseCases/Users/Queries/GetAll/GetAllUsersQuery.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Domain/Entities/RefreshSecurityToken.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Identity/Repositories/UserRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Identity/Services/TokenManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Identity/Services/UserService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Persistence/Migrations/20250123201617_Corrections.Designer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Persistence/Migrations/20250123201617_Corrections.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Persistence/Migrations/20250123203738_OperationalCirculationHasData.Designer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Persistence/Migrations/20250123203738_OperationalCirculationHasData.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/Controllers/UsersController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/logs/log-20250123.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/logs/log-20250124.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.AutomatedOperationalCirculationSystem/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.AutomatedOperationalCirculationSystem/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/Commons/BaseAuditableEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Commons/BaseAuditableEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Persistence.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/Persistence.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Application.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Application.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/DTOs/Users/CreateUserRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/DTOs/Users/CreateUserRequest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/DTOs/Users/UpdateUserRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/DTOs/Users/UpdateUserRequest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/DTOs/Users/UserResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/DTOs/Users/UserResponse.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/Services/OrganService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Application/Services/OrganService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Identity/DependencyInjection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Identity/DependencyInjection.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Identity/Identity.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Identity/Identity.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Persistence/Configurations/OperationalCirculationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/Configurations/OperationalCirculationConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Persistence/Contexts/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/Contexts/ApplicationDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Persistence/DependencyInjection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/DependencyInjection.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Persistence/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/DependencyInjection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/DependencyInjection.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/Server/appsettings.json" afterDir="false" />
     </list>
@@ -25,12 +56,14 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DpaMonitoringSettings">
+    <option name="autoShow" value="false" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Persistence/Class1.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Johnson/RiderProjects/AutomatedOperationalCirculationSystem/Server/Program.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Johnson/RiderProjects/AutomatedOperationalCirculationSystem/Server/appsettings.json" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -46,6 +79,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.Api: IIS Express.executor&quot;: &quot;Run&quot;,
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -143,7 +177,8 @@
       <workItem from="1737586902345" duration="11146000" />
       <workItem from="1737598370469" duration="3242000" />
       <workItem from="1737607537190" duration="3513000" />
-      <workItem from="1737611231233" duration="8210000" />
+      <workItem from="1737611231233" duration="18348000" />
+      <workItem from="1737726833573" duration="6792000" />
     </task>
     <task id="LOCAL-00001" summary="Creating the project">
       <option name="closed" value="true" />
@@ -185,7 +220,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737644478527</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Implementing Global Exception Handler and Middlewares">
+      <option name="closed" value="true" />
+      <created>1737646956260</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1737646956260</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -239,6 +282,7 @@
     <MESSAGE value="Defining and configuring domain entities" />
     <MESSAGE value="Implementing Use Cases" />
     <MESSAGE value="Creating Controllers" />
-    <option name="LAST_COMMIT_MESSAGE" value="Creating Controllers" />
+    <MESSAGE value="Implementing Global Exception Handler and Middlewares" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementing Global Exception Handler and Middlewares" />
   </component>
 </project>

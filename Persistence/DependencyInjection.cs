@@ -21,33 +21,38 @@ public static class DependencyInjection
 
         Guard.Against.Null(input: connectionString, message: "No se encontró la cadena de conexión 'DefaultConnection'.");
 
+        // Registrar interceptores
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
 
+        // Configurar DbContext
         services.AddDbContext<ApplicationDbContext>(optionsAction: (serviceProvider, options) =>
         {
-            // Add interceptors to handle context changes
+            // Agregar interceptores al contexto
             options.AddInterceptors(serviceProvider.GetServices<ISaveChangesInterceptor>());
 
-            // Configure the database provider
+            // Configurar el proveedor de base de datos
             options.UseNpgsql(connectionString, npgsqlOptionsAction: npgsqlOptions =>
             {
-                // Defines the assembly where the migrations will be generated
+                // Define el ensamblado donde se generarán las migraciones
                 npgsqlOptions.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
         
-                // Enable retries on failure
+                // Habilitar reintentos en caso de fallo
                 npgsqlOptions.EnableRetryOnFailure(
-                    maxRetryCount: 5,                          //Maximum number of retries
-                    maxRetryDelay: TimeSpan.FromSeconds(10),   // Time between retries
-                    errorCodesToAdd: null                       // Additional error codes to consider for retries
+                    maxRetryCount: 5,                          // Número máximo de reintentos
+                    maxRetryDelay: TimeSpan.FromSeconds(10),   // Tiempo entre reintentos
+                    errorCodesToAdd: null                      // Códigos de error adicionales a tener en cuenta para los reintentos
                 );
-            }).UseExceptionProcessor(); // Enables exception processing
+            }).UseExceptionProcessor(); // Habilita el procesamiento de excepciones
         });
 
+        // Proveer el contexto a través de la interfaz
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         
+        // Registrar proveedor de tiempo
         services.AddScoped<ITimeProvider, SystemTimeProvider>();
 
+        // Registrar repositorio genérico
         services.AddTransient(serviceType: typeof(IRepositoryAsync<>), implementationType: typeof(RepositoryAsync<>));
         
         return services;
