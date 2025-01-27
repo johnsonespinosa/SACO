@@ -1,12 +1,13 @@
-using Application.Interfaces;
+using Shared.DTOs;
+using Shared.Interfaces;
 
 namespace Application.UseCases.OperationalCirculations.Commands.Delete;
 
-public record DeleteOperationalCirculationCommand(Guid Id) : IRequest<ErrorOr<Unit>>
+public record DeleteOperationalCirculationCommand(Guid Id) : IRequest<ServiceResponse<ErrorOr<Unit>>>
 {
-    internal sealed class DeleteOperationalCirculationCommandHandler(IOperationalCirculationService service) : IRequestHandler<DeleteOperationalCirculationCommand, ErrorOr<Unit>>
+    internal sealed class DeleteOperationalCirculationCommandHandler(ICirculationService service) : IRequestHandler<DeleteOperationalCirculationCommand, ServiceResponse<ErrorOr<Unit>>>
     {
-        public async Task<ErrorOr<Unit>> Handle(DeleteOperationalCirculationCommand request, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ErrorOr<Unit>>> Handle(DeleteOperationalCirculationCommand request, CancellationToken cancellationToken)
         {
             return await service.Delete(request.Id);
         }

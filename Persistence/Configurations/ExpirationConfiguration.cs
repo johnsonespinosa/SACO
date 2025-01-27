@@ -12,7 +12,7 @@ public class ExpirationConfiguration : IEntityTypeConfiguration<Expiration>
 
         builder.Property(expirationCode => expirationCode.Id);
 
-        builder.Property(expirationCode => expirationCode.Description);
+        builder.Property(expirationCode => expirationCode.Description).HasMaxLength(3);
 
         builder.HasData(new Expiration
             {

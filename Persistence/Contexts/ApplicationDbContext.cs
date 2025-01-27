@@ -24,10 +24,10 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){}
     
-    public DbSet<Circulation> Circulations => Set<Circulation>();
+    public DbSet<CirculationType> Circulations => Set<CirculationType>();
     public DbSet<Citizenship> Citizenships => Set<Citizenship>();
     public DbSet<Expiration> Expirations => Set<Expiration>();
-    public DbSet<OperationalCirculation> OperationalCirculations => Set<OperationalCirculation>();
+    public DbSet<Circulation> OperationalCirculations => Set<Circulation>();
     public DbSet<Organ> Organs => Set<Organ>();
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

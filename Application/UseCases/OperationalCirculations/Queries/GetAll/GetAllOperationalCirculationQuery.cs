@@ -1,13 +1,14 @@
-using Application.DTOs.OperationalCirculations;
-using Application.Interfaces;
+using Shared.DTOs;
+using Shared.DTOs.OperationalCirculations;
+using Shared.Interfaces;
 
 namespace Application.UseCases.OperationalCirculations.Queries.GetAll;
 
-public record GetAllOperationalCirculationQuery(string FilterText) : IRequest<IReadOnlyCollection<OperationalCirculationResponse>>
+public record GetAllOperationalCirculationQuery(string FilterText) : IRequest<ServiceResponse<IReadOnlyCollection<CirculationResponse>>>
 {
-    internal sealed class GetAllOperationalCirculationQueryHandler(IOperationalCirculationService service) : IRequestHandler<GetAllOperationalCirculationQuery, IReadOnlyCollection<OperationalCirculationResponse>>
+    internal sealed class GetAllOperationalCirculationQueryHandler(ICirculationService service) : IRequestHandler<GetAllOperationalCirculationQuery, ServiceResponse<IReadOnlyCollection<CirculationResponse>>>
     {
-        public async Task<IReadOnlyCollection<OperationalCirculationResponse>> Handle(GetAllOperationalCirculationQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<IReadOnlyCollection<CirculationResponse>>> Handle(GetAllOperationalCirculationQuery request, CancellationToken cancellationToken)
         {
             return await service.GetAll(request.FilterText);
         }

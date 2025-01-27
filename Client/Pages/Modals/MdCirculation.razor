@@ -1,0 +1,210 @@
+@inject ICirculationService CirculationService
+@inject ICirculationTypeService CirculationTypeService
+@inject ICitizenshipService CitizenshipService
+@inject IExpirationService ExpirationService
+@inject IOrganService OrganService
+@inject ISnackbar Snackbar
+
+<MudDialog Style="width:400px">
+    <DialogContent>
+        <MudContainer Style="max-height: 400px; overflow-y: scroll" Class="m-0 p-0">
+            <EditForm Model="@CirculationRequest" OnValidSubmit="Save">
+                <MudTextField @bind-Value="@CirculationRequest.FirstName" Class="mb-3"
+                              Label="Nombre" Variant="Variant.Outlined" Adornment="Adornment.End"
+                              AdornmentIcon="@Icons.Material.Filled.Badge" />
+
+                <MudTextField @bind-Value="@CirculationRequest.SecondName" Class="mb-3"
+                              Label="Segundo Nombre" Variant="Variant.Outlined" Adornment="Adornment.End"
+                              AdornmentIcon="@Icons.Material.Filled.Badge" />
+
+                <MudTextField @bind-Value="@CirculationRequest.LastName1" Class="mb-3"
+                              Label="Primer Apellido" Variant="Variant.Outlined" Adornment="Adornment.End"
+                              AdornmentIcon="@Icons.Material.Filled.Badge" />
+
+                <MudTextField @bind-Value="@CirculationRequest.LastName2" Class="mb-3"
+                              Label="Segundo Apellido" Variant="Variant.Outlined" Adornment="Adornment.End"
+                              AdornmentIcon="@Icons.Material.Filled.Badge" />
+
+                <MudDatePicker @bind-Value="@CirculationRequest.BirthDate" Class="mb-3"
+                               Label="Fecha de Nacimiento" Variant="Variant.Outlined"/>
+
+                <MudSelect Label="Tipo de Circulación" Variant="Variant.Outlined"
+                           AnchorOrigin="Origin.BottomCenter" Class="mb-3"
+                           @bind-Value="_circulationTypeSelected">
+                    @if (_circulationTypes.Any())
+                    {
+                    foreach (var circulationType in _circulationTypes)
+                    {
+                    <MudSelectItem Value="@circulationType">@circulationType.Description</MudSelectItem>
+                    }
+                    }
+                </MudSelect>
+
+                <MudSelect Label="Ciudadanía" Variant="Variant.Outlined"
+                           AnchorOrigin="Origin.BottomCenter" Class="mb-3"
+                           @bind-Value="_citizenshipSelected">
+                    @if (_citizenships.Any())
+                    {
+                    foreach (var citizenship in _citizenships)
+                    {
+                    <MudSelectItem Value="@citizenship">@citizenship.Description</MudSelectItem>
+                    }
+                    }
+                </MudSelect>
+
+                <MudSelect Label="Vencimiento" Variant="Variant.Outlined"
+                           AnchorOrigin="Origin.BottomCenter" Class="mb-3"
+                           @bind-Value="_expirationSelected">
+                    @if (_expirations.Any())
+                    {
+                    foreach (var expiration in _expirations)
+                    {
+                    <MudSelectItem Value="@expiration">@expiration.Description</MudSelectItem>
+                    }
+                    }
+                </MudSelect>
+
+                <MudSelect Label="Órgano" Variant="Variant.Outlined"
+                           AnchorOrigin="Origin.BottomCenter" Class="mb-3"
+                           @bind-Value="_organSelected">
+                    @if (_organs.Any())
+                    {
+                    foreach (var organ in _organs)
+                    {
+                    <MudSelectItem Value="@organ">@organ.Name</MudSelectItem>
+                    }
+                    }
+                </MudSelect>
+
+                <MudTextField @bind-Value="@CirculationRequest.Section" Class="mb-3"
+                              Label="Sección" Variant="Variant.Outlined"/>
+
+                <MudTextField @bind-Value="@CirculationRequest.Official" Class="mb-3"
+                              Label="Oficial Responsable" Variant="Variant.Outlined"/>
+
+                <MudTextField @bind-Value="@CirculationRequest.Phone1" Class="mb-3"
+                              Label="Teléfono 1" Variant="Variant.Outlined"/>
+
+                <MudTextField @bind-Value="@CirculationRequest.Phone2" Class="mb-3"
+                              Label="Teléfono 2 (opcional)" Variant="Variant.Outlined"/>
+
+                <MudTextField @bind-Value="@CirculationRequest.Instruction" Class="mb-3"
+                              Label="Instrucción" Variant="Variant.Outlined"/>
+
+                <MudTextField @bind-Value="@CirculationRequest.Observations" Class="mb-3"
+                              Label="Observaciones (opcional)" Variant="Variant.Outlined"/>
+
+                <MudTextField @bind-Value="@CirculationRequest.ReasonForCirculation" Class="mb-3"
+                              Label="Motivo de la Circulación" Variant="Variant.Outlined"/>
+            </EditForm>
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="Cancel">Cancelar</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Save">Guardar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+[Parameter]
+public CirculationRequest CirculationRequest { get; set; } = new();
+
+private List<CirculationTypeResponse> _circulationTypes = new();
+private List<CitizenshipResponse> _citizenships = new();
+private List<ExpirationResponse> _expirations = new();
+private List<OrganResponse> _organs = new();
+
+private CirculationTypeResponse? _circulationTypeSelected;
+private CitizenshipResponse? _citizenshipSelected;
+private ExpirationResponse? _expirationSelected;
+private OrganResponse? _organSelected;
+
+[CascadingParameter]
+MudDialogInstance? MudDialog { get; set; }
+
+protected override async Task OnInitializedAsync()
+{
+var circulationTypeResponse = await CirculationTypeService.GetAll();
+if (circulationTypeResponse.Succeeded)
+{
+_circulationTypes = circulationTypeResponse.Result!.ToList();
+_circulationTypeSelected = CirculationRequest.Id != Guid.Empty
+? _circulationTypes.FirstOrDefault(c => c.Id == CirculationRequest.CirculationType?.Id)
+: _circulationTypes.FirstOrDefault();
+}
+else
+{
+Snackbar.Add("Error al cargar los tipos de circulación.", Severity.Error);
+}
+
+var citizenshipResponse = await CitizenshipService.GetAll();
+if (citizenshipResponse.Succeeded)
+{
+_citizenships = citizenshipResponse.Result!.ToList();
+// Puedes establecer un valor predeterminado si es necesario
+}
+else
+{
+Snackbar.Add("Error al cargar las ciudadanías.", Severity.Error);
+}
+
+var expirationResponse = await ExpirationService.GetAll();
+if (expirationResponse.Succeeded)
+{
+_expirations = expirationResponse.Result!.ToList();
+// Puedes establecer un valor predeterminado si es necesario
+}
+else
+{
+Snackbar.Add("Error al cargar las fechas de vencimiento.", Severity.Error);
+}
+
+var organResponse = await OrganService.GetAll();
+if (organResponse.Succeeded)
+{
+_organs = organResponse.Result!.ToList();
+// Puedes establecer un valor predeterminado si es necesario
+}
+else
+{
+Snackbar.Add("Error al cargar los órganos.", Severity.Error);
+}
+}
+
+private void Cancel() => MudDialog?.Cancel();
+
+private async Task Save()
+{
+if (_circulationTypeSelected != null &&
+_citizenshipSelected != null &&
+_expirationSelected != null &&
+_organSelected != null)
+{
+CirculationRequest.CirculationType = new CirculationTypeResponse { Id = _circulationTypeSelected.Id };
+CirculationRequest.Citizenship = new CitizenshipResponse { Id = _citizenshipSelected.Id };
+CirculationRequest.Expiration = new ExpirationResponse { Id = _expirationSelected.Id };
+CirculationRequest.Organ = new OrganResponse { Id = _organSelected.Id };
+
+var response = CirculationRequest.Id != Guid.Empty
+? await CirculationService.Update(CirculationRequest)
+: await CirculationService.CreateAsync(CirculationRequest);
+
+string message = response.Message;
+bool result = response.Succeeded;
+
+if (result)
+{
+Snackbar.Add(message, Severity.Success);
+MudDialog?.Close(DialogResult.Ok(true));
+}
+else
+{
+Snackbar.Add(message, Severity.Error);
+}
+}
+else
+{
+Snackbar.Add("Por favor, completa todos los campos obligatorios.", Severity.Warning);
+}
+}
+}

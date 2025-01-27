@@ -1,0 +1,84 @@
+@page "/"
+@inject NavigationManager NavigationManager
+@inject IUserService UserService
+
+@layout LoginLayout
+
+<EditForm Model="@_authenticationRequest" OnValidSubmit="OnValidSubmit">
+
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+    <MudText Typo="Typo.h4" GutterBottom="true" Align="Align.Center">Bienvenido</MudText>
+
+
+    <MudTextField 
+        T="string" 
+        @bind-Value="@_authenticationRequest.Email" 
+        Label="Correo" 
+        Variant="Variant.Outlined" 
+        Class="my-6"
+        For="@(() => _authenticationRequest.Email!)">
+    </MudTextField>
+
+    <MudTextField 
+        @bind-Value="@_authenticationRequest.Password" 
+        Label="Contraseña" 
+        Variant="Variant.Outlined" 
+        InputType="@_passwordInput" 
+        Adornment="Adornment.End" 
+        AdornmentIcon="@_passwordInputIcon" 
+        OnAdornmentClick="TogglePasswordVisibility"
+                  For="@(() => _authenticationRequest.Password)" />
+
+    <MudButton Class="mt-5" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit" Size="Size.Large" 
+    FullWidth="true"
+               Disabled="@DisableButton">Iniciar Sesión</MudButton>
+    
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="@(MyImageClass + " my-7")" />
+</EditForm>
+
+<MudAlert Severity="Severity.Error" Class="@(MyAlert + " mt-8 mud-width-full")" Style="max-width:500px;" Elevation="25">No se encontraron coincidencias</MudAlert>
+
+
+@code {
+    readonly AuthenticationRequest _authenticationRequest = new();
+    string MyImageClass { get; set; } = "d-none";
+    string MyAlert { get; set; } = "d-none";
+    bool DisableButton { get; set; }
+
+    bool _passwordVisibility;
+    InputType _passwordInput = InputType.Password;
+    string _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    void TogglePasswordVisibility()
+    {
+        @if (_passwordVisibility)
+        {
+            _passwordVisibility = false;
+            _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
+            _passwordInput = InputType.Password;
+        }
+        else
+        {
+            _passwordVisibility = true;
+            _passwordInputIcon = Icons.Material.Filled.Visibility;
+            _passwordInput = InputType.Text;
+        }
+    }
+
+    private async Task OnValidSubmit()
+    {
+        MyImageClass = "d-block";
+        DisableButton = true;
+        var response = await UserService.AuthenticateAsync(_authenticationRequest, "");
+
+        if (response.Succeeded)
+            NavigationManager.NavigateTo(uri: "/page/circulación");
+        else
+        {
+            MyImageClass = "d-none";
+            DisableButton = false;
+            MyAlert = "d-block";
+        }
+    }
+}

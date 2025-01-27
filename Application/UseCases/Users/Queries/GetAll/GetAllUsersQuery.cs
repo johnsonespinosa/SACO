@@ -1,15 +1,16 @@
-using Application.DTOs.Users;
-using Application.Interfaces;
+using Shared.DTOs;
+using Shared.DTOs.Users;
+using Shared.Interfaces;
 
 namespace Application.UseCases.Users.Queries.GetAll;
 
-public record GetAllUsersQuery : IRequest<IReadOnlyCollection<UserResponse>>
+public record GetAllUsersQuery(string FilterRequest) : IRequest<ServiceResponse<IReadOnlyCollection<UserResponse>>>
 {
-    internal sealed class GetAllUsersQueryHandler(IUserService service) : IRequestHandler<GetAllUsersQuery, IReadOnlyCollection<UserResponse>>
+    internal sealed class GetAllUsersQueryHandler(IUserService service) : IRequestHandler<GetAllUsersQuery, ServiceResponse<IReadOnlyCollection<UserResponse>>>
     {
-        public async Task<IReadOnlyCollection<UserResponse>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<IReadOnlyCollection<UserResponse>>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            return await service.GetAllAsync();
+            return await service.GetAllAsync(request.FilterRequest);
         }
     }
 }

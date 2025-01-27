@@ -9,6 +9,11 @@ namespace Api.Controllers.Bases;
 [ApiController]
 public class CustomControllerBase : ControllerBase
 {
+    /// <summary>
+    /// Devuelve un resultado de error basado en una lista de errores.
+    /// </summary>
+    /// <param name="errors">Lista de errores a procesar.</param>
+    /// <returns>Un IActionResult que representa el resultado del error.</returns>
     protected IActionResult Problem(List<Error> errors)
     {
         if (errors.Count is 0)
@@ -28,10 +33,12 @@ public class CustomControllerBase : ControllerBase
         {
             ErrorType.Conflict => StatusCodes.Status409Conflict,
             ErrorType.Validation => StatusCodes.Status400BadRequest,
+            ErrorType.NotFound => StatusCodes.Status404NotFound,
             _ => StatusCodes.Status500InternalServerError,
         };
         return Problem(statusCode: statusCode, title: error.Description);
     }
+
 
     private IActionResult ValidationProblem(List<Error> errors)
     {

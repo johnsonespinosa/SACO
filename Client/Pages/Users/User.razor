@@ -1,0 +1,147 @@
+@page "/page/usuario"
+@inject IUserService UserService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject SweetAlertService SweetAlertService;
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
+
+    <MudText Typo="Typo.h5" GutterBottom="true">Usuarios</MudText>
+
+    <MudPaper Elevation="3" Class="pa-4" Width="100%">
+        <MudGrid>
+            <MudItem xs="12">
+                <MudButton Variant="Variant.Filled" 
+                           StartIcon="@Icons.Material.Filled.Add"
+                           Color="Color.Primary"
+                           OnClick="OpenModalNewUser">
+                    Nuevo Usuario</MudButton>
+            </MudItem>
+            <MudItem xs="12">
+
+                <MudTable 
+                    Items="@_users"
+                    Dense="true"
+                    Striped="true" Bordered="true" 
+                    Filter="new Func<UserResponse,bool>(FilterFunc1)" @bind-SelectedItem="_selectedItem1"
+                    Loading="@_loading" LoadingProgressColor="Color.Info"
+                >
+                    <ToolBarContent>
+                        <MudSpacer />
+                        <MudTextField @bind-Value="_searchString1" Placeholder="Buscar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                    </ToolBarContent>
+                    <HeaderContent>
+                        <MudTh>Nombre</MudTh>
+                        <MudTh>Correo</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate Context="usuarioRow">
+                        <MudTd DataLabel="Nombre usuario">@usuarioRow.UserName</MudTd>
+                        <MudTd DataLabel="Correo">@usuarioRow.Email</MudTd>
+                        <MudTd DataLabel="">
+                            <MudFab Color="Color.Primary" 
+                                    StartIcon="@Icons.Material.Filled.Edit"
+                                    Size="Size.Small" 
+                                    IconSize="Size.Small"
+                                    OnClick="@(() => OpenModalEditUser(usuarioRow))"
+                            />
+                            <MudFab 
+                                Color="Color.Error" 
+                                StartIcon="@Icons.Material.Filled.Delete" 
+                                Size="Size.Small" 
+                                IconSize="Size.Small"
+                                OnClick="@(() => EliminarUsuario(usuarioRow))"
+                            />
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager />
+                    </PagerContent>
+                </MudTable>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    List<UserResponse> _users = new();
+    private string _searchString1 = "";
+    private UserResponse? _selectedItem1;
+    private bool _loading = true;
+
+    private async Task GetUsers()
+    {
+        var response = await UserService.GetAllAsync(_searchString1);
+
+        if (response.Succeeded)
+        {
+            _users = (List<UserResponse>)response.Result!;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetUsers();
+        _loading = false;
+    }
+
+    private bool FilterFunc1(UserResponse element) => FilterFunc(element, _searchString1);
+
+    private bool FilterFunc(UserResponse element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.UserName!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Email!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{element.UserName} {element.Email}".Contains(searchString))
+            return true;
+
+        return false;
+    }
+
+    private async Task OpenModalNewUser()
+    {
+        var dialog = await DialogService.ShowAsync<MdUser>(title: "Nuevo Usuario");
+        var result = await dialog.Result;
+
+        if (!result!.Canceled)
+            await GetUsers();
+    }
+
+    private async Task OpenModalEditUser(UserResponse usuario)
+    {
+        var parameters = new DialogParameters { ["_user"] = usuario };
+        var dialog = await DialogService.ShowAsync<MdUser>(title: "Editar Usuario",parameters);
+        var result = await dialog.Result;
+        if (!result!.Canceled)
+            await GetUsers();
+    }
+
+    private async Task EliminarUsuario(UserResponse usuario)
+    {
+        SweetAlertResult result = await SweetAlertService.FireAsync(settings: new SweetAlertOptions
+            {
+                Title = "¿Estás seguro?",
+                Text = $"Eliminar usuario: {usuario.UserName}",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Si, eliminar",
+                CancelButtonText = "No, volver"
+            });
+
+        if (result.IsConfirmed)
+        {
+            var response = await UserService.DeleteAsync(usuario.Id!);
+
+            if (response.Succeeded)
+            {
+                Snackbar.Add(message: response.Message, Severity.Success, configure: options => options.VisibleStateDuration = 500);
+                await GetUsers();
+            }
+            else
+                Snackbar.Add(message: response.Message, Severity.Error, configure: options => options.VisibleStateDuration = 500);
+        }
+    }
+}

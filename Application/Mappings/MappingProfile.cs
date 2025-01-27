@@ -1,11 +1,10 @@
-using Application.DTOs.Circulations;
-using Application.DTOs.Citizenships;
-using Application.DTOs.Expirations;
-using Application.DTOs.OperationalCirculations;
-using Application.DTOs.Organs;
-using Application.DTOs.Users;
-using Application.UseCases.Users.Commands.Update;
 using Domain.Entities;
+using Shared.DTOs.Circulations;
+using Shared.DTOs.Citizenships;
+using Shared.DTOs.Expirations;
+using Shared.DTOs.OperationalCirculations;
+using Shared.DTOs.Organs;
+using Shared.DTOs.Users;
 
 namespace Application.Mappings;
 
@@ -15,7 +14,7 @@ public class MappingProfile : Profile
     {
         #region OperationalCirculations
         // Mapeo desde CreateOperationalCirculationRequest a OperationalCirculation
-        CreateMap<CreateOperationalCirculationRequest, OperationalCirculation>()
+        CreateMap<CirculationRequest, Circulation>()
             .ForMember(destinationMember: operationalCirculation =>  operationalCirculation.Id,
                 memberOptions: opt
                     => opt.Ignore()) // Ignorar Id, ya que se genera automáticamente
@@ -40,7 +39,7 @@ public class MappingProfile : Profile
 
         
         // Mapeo desde UpdateOperationalCirculationRequest a OperationalCirculation
-        CreateMap<UpdateOperationalCirculationRequest, OperationalCirculation>()
+        CreateMap<CirculationRequest, Circulation>()
             .ForMember(destinationMember: operationalCirculation =>  operationalCirculation.Id,
                 memberOptions: opt
                     => opt.Ignore()) // Ignorar Id, ya que se genera automáticamente
@@ -64,7 +63,7 @@ public class MappingProfile : Profile
                     => opt.Ignore()); // Ignorar DeletedBy si es nullable
         
         // Mapeo desde OperationalCirculation a OperationalCirculationResponse
-        CreateMap<OperationalCirculation, OperationalCirculationResponse>();
+        CreateMap<Circulation, CirculationResponse>();
         #endregion
 
         #region Citizenships
@@ -80,18 +79,12 @@ public class MappingProfile : Profile
         #endregion
 
         #region Circulations
-        CreateMap<Circulation, CirculationResponse>();
+        CreateMap<CirculationType, CirculationTypeResponse>();
         #endregion
 
         #region Users
 
-        CreateMap<CreateUserRequest, User>()
-            .ForMember(destinationMember: user =>  user.Id,
-                memberOptions: opt
-                    => opt.Ignore()) // Ignorar Id, ya que se genera automáticamente
-            .ForMember(destinationMember: user => user.PasswordHash, memberOptions: opt
-                => opt.MapFrom(mapExpression: createUserRequest => createUserRequest.Password));
-        CreateMap<UpdateUserRequest, User>()
+        CreateMap<UserRequest, User>()
             .ForMember(destinationMember: user =>  user.Id,
                 memberOptions: opt
                     => opt.Ignore()) // Ignorar Id, ya que se genera automáticamente

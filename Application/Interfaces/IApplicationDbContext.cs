@@ -4,9 +4,9 @@ namespace Application.Interfaces;
 
 public interface IApplicationDbContext
 {
-    DbSet<Circulation> Circulations { get; }
+    DbSet<CirculationType> Circulations { get; }
     DbSet<Citizenship> Citizenships { get; }
     DbSet<Expiration> Expirations { get; }
-    DbSet<OperationalCirculation> OperationalCirculations { get; }
+    DbSet<Circulation> OperationalCirculations { get; }
     DbSet<Organ> Organs { get; }
 }

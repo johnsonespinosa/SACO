@@ -4,4 +4,5 @@ public sealed class Organ
 {
     public Guid Id { get; init; }
     public required string Name { get; init; }
+    public IEnumerable<Circulation>? Circulations { get; init; }
 }

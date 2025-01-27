@@ -12,7 +12,7 @@ public class OrganConfiguration : IEntityTypeConfiguration<Organ>
 
         builder.Property(organ => organ.Id);
 
-        builder.Property(organ => organ.Name);
+        builder.Property(organ => organ.Name).HasMaxLength(10);
 
         builder.HasData(
             new Organ { Id = Guid.NewGuid(), Name = "PTI"},

@@ -1,8 +1,8 @@
-using Application.DTOs.Users;
+using Shared.DTOs.Users;
 
 namespace Application.UseCases.Users.Commands.Update;
 
-public class UpdateUserCommandValidator : AbstractValidator<UpdateUserRequest>
+public class UpdateUserCommandValidator : AbstractValidator<UserRequest>
 {
     public UpdateUserCommandValidator()
     {
@@ -22,7 +22,7 @@ public class UpdateUserCommandValidator : AbstractValidator<UpdateUserRequest>
             .NotEmpty().WithMessage("Password is required.")
             .MinimumLength(6).WithMessage("The password must be at least 6 characters.");
 
-        RuleFor(expression: request => request.ConfirmPassword)
+        RuleFor(expression: request => request.PasswordConfirm)
             .Equal(expression: request => request.Password).WithMessage("The passwords do not match.");
     }
 }

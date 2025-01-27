@@ -1,13 +1,14 @@
-using Application.DTOs.OperationalCirculations;
-using Application.Interfaces;
+using Shared.DTOs;
+using Shared.DTOs.OperationalCirculations;
+using Shared.Interfaces;
 
 namespace Application.UseCases.OperationalCirculations.Commands.Update;
 
-public record UpdateOperationalCirculationCommand(UpdateOperationalCirculationRequest OperationalCirculationRequest) : IRequest<ErrorOr<Unit>>
+public record UpdateOperationalCirculationCommand(CirculationRequest OperationalCirculationRequest) : IRequest<ServiceResponse<ErrorOr<Unit>>>
 {
-    internal sealed class UpdateOperationalCirculationCommandHandler(IOperationalCirculationService service) : IRequestHandler<UpdateOperationalCirculationCommand, ErrorOr<Unit>>
+    internal sealed class UpdateOperationalCirculationCommandHandler(ICirculationService service) : IRequestHandler<UpdateOperationalCirculationCommand, ServiceResponse<ErrorOr<Unit>>>
     {
-        public async Task<ErrorOr<Unit>> Handle(UpdateOperationalCirculationCommand request, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ErrorOr<Unit>>> Handle(UpdateOperationalCirculationCommand request, CancellationToken cancellationToken)
         {
             return await service.Update(request.OperationalCirculationRequest);
         }

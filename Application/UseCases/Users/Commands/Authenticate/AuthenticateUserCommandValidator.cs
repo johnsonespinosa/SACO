@@ -1,4 +1,4 @@
-using Application.DTOs.Users;
+using Shared.DTOs.Users;
 
 namespace Application.UseCases.Users.Commands.Authenticate;
 

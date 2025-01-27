@@ -2,3 +2,4 @@
 2025-01-24 10:30:18.042 -05:00 [WRN] Solicitud de demostración de larga duración: AuthenticateUserCommand (667 milisegundos)   {"AuthenticationRequest":{"Email":"admin@gmail.com","Password":"Admin@123","$type":"AuthenticationRequest"},"IpAddress":"0.0.0.1","$type":"AuthenticateUserCommand"}
 2025-01-24 10:30:18.085 -05:00 [INF] HTTP POST /api/Users/Authenticate responded 200 in 801.0634 ms
 2025-01-24 10:48:25.234 -05:00 [INF] HTTP GET /api/Users responded 200 in 512.4398 ms
+2025-01-24 13:22:25.951 -05:00 [INF] HTTP GET /api/Users responded 200 in 538.7243 ms

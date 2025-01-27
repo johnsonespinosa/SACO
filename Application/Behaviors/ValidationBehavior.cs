@@ -1,4 +1,4 @@
-using Application.Models;
+using Shared.DTOs;
 
 namespace Application.Behaviors;
 

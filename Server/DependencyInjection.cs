@@ -28,13 +28,10 @@ public static class DependencyInjection
         // CORS
         services.AddCors(options =>
         {
-            options.AddPolicy(name: "CorsPolicy", configurePolicy: builder =>
-            {
-                builder.WithOrigins("https://localhost:7163")
+            options.AddPolicy(name: "AllowAllOrigins",
+                configurePolicy: builder => builder.AllowAnyOrigin()
                     .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials();
-            });
+                    .AllowAnyHeader());
         });
 
         return services;

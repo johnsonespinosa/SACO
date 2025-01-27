@@ -1,0 +1,153 @@
+@page "/circulación"
+@inject ICirculationService CirculationService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject SweetAlertService SweetAlertService;
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
+
+    <MudText Typo="Typo.h5" GutterBottom="true">Circulaciones</MudText>
+
+    <MudPaper Elevation="3" Class="pa-4" Width="100%">
+        <MudGrid>
+            <MudItem xs="12">
+                <MudButton Variant="Variant.Filled"
+                           StartIcon="@Icons.Material.Filled.Add"
+                           Color="Color.Primary"
+                           OnClick="OpenModalNewCirculation">
+                    Nuevo Circulación
+                </MudButton>
+            </MudItem>
+            <MudItem xs="12">
+
+                <MudTable Items="@_circulations"
+                          Striped="true" Bordered="true" Dense="true"
+                          Filter="new Func<CirculationResponse,bool>(FilterFunc1)" @bind-SelectedItem="_selectedItem1"
+                          Loading="@_loading" LoadingProgressColor="Color.Info">
+                    <ToolBarContent>
+                        <MudSpacer />
+                        <MudTextField @bind-Value="_searchString1" Placeholder="Buscar" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                    </ToolBarContent>
+                    <HeaderContent>
+                        <MudTh>Nombre</MudTh>
+                        <MudTh>1er Apellido</MudTh>
+                        <MudTh>2do Apellido</MudTh>
+                        <MudTh>Fecha de Nacimiento</MudTh>
+                        <MudTh>Tipo de Circulación</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate Context="circulationResponse">
+                        <MudTd DataLabel="Nombre">@circulationResponse.FirstName</MudTd>
+                        <MudTd DataLabel="1er Apellido">@circulationResponse.LastName1</MudTd>
+                        <MudTd DataLabel="2do Apellido">@circulationResponse.LastName2</MudTd>
+                        <MudTd DataLabel="Fecha de Nacimiento">@circulationResponse.BirthDate</MudTd>
+                        <MudTd DataLabel="Tipo de Circulación">@circulationResponse.CirculationType</MudTd>
+                        <MudTd DataLabel="">
+                            <MudFab Color="Color.Primary"
+                                    StartIcon="@Icons.Material.Filled.Edit"
+                                    Size="Size.Small"
+                                    IconSize="Size.Small"
+                                    OnClick="@(() => OpenModalUpdateCirculation(circulationResponse))" />
+                            <MudFab Color="Color.Error"
+                                    StartIcon="@Icons.Material.Filled.Delete"
+                                    Size="Size.Small"
+                                    IconSize="Size.Small"
+                                    OnClick="@(() => EliminarUsuario(circulationResponse))" />
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager />
+                    </PagerContent>
+                </MudTable>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    List<CirculationResponse> _circulations = new();
+    private string _searchString1 = "";
+    private CirculationResponse? _selectedItem1;
+    private bool _loading = true;
+
+    private async Task GetCirculations()
+    {
+        var response = await CirculationService.GetAll(_searchString1);
+
+        if (response.Succeeded)
+            _circulations = (List<CirculationResponse>)response.Result!;
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetCirculations();
+        _loading = false;
+    }
+
+    private bool FilterFunc1(CirculationResponse element) => FilterFunc(element, _searchString1);
+
+    private bool FilterFunc(CirculationResponse element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.LastName1.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.LastName2.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if ($"{element.FirstName} {element.LastName1} {element.LastName2}".Contains(searchString))
+            return true;
+
+        return false;
+    }
+
+    private async Task OpenModalNewCirculation()
+    {
+        var dialog = await DialogService.ShowAsync<MdCirculation>(title: "Nueva Circulación");
+        var dialogResult = await dialog.Result;
+
+        if (!dialogResult!.Canceled)
+            await GetCirculations();
+
+    }
+
+    private async Task OpenModalUpdateCirculation(CirculationResponse model)
+    {
+        var parameters = new DialogParameters { ["_circulation"] = model };
+
+        var dialog = await DialogService.ShowAsync<MdCirculation>(title: "Editar circulación", parameters);
+        var dialogResult = await dialog.Result;
+
+        if (!dialogResult!.Canceled)
+            await GetCirculations();
+    }
+
+    private async Task EliminarUsuario(CirculationResponse model)
+    {
+        SweetAlertResult result = await SweetAlertService.FireAsync(settings: new SweetAlertOptions
+        {
+            Title = "Esta seguro?",
+            Text = $"Eliminar circulación: {model.FirstName} {model.LastName1} {model.LastName2}",
+            Icon = SweetAlertIcon.Warning,
+            ShowCancelButton = true,
+            ConfirmButtonText = "Si, eliminar",
+            CancelButtonText = "No, volver"
+        });
+
+        if (result.IsConfirmed)
+        {
+            var response = await CirculationService.Delete(model.Id);
+
+            if (response.Succeeded)
+            {
+                Snackbar.Add(message: response.Message, Severity.Success, configure: options => options.VisibleStateDuration = 500);
+                await GetCirculations();
+            }
+            else
+                Snackbar.Add(message: response.Message, Severity.Error, configure: options => options.VisibleStateDuration = 500);
+        }
+    }
+}

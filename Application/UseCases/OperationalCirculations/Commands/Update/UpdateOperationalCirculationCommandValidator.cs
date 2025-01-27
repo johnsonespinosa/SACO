@@ -1,8 +1,8 @@
-using Application.DTOs.OperationalCirculations;
+using Shared.DTOs.OperationalCirculations;
 
 namespace Application.UseCases.OperationalCirculations.Commands.Update;
 
-public class UpdateOperationalCirculationCommandValidator : AbstractValidator<UpdateOperationalCirculationRequest>
+public class UpdateOperationalCirculationCommandValidator : AbstractValidator<CirculationRequest>
 {
     public UpdateOperationalCirculationCommandValidator()
     {
@@ -22,12 +22,10 @@ public class UpdateOperationalCirculationCommandValidator : AbstractValidator<Up
                 .NotEmpty().WithMessage("La fecha de nacimiento es requerida.");
 
             RuleFor(expression: request => request.Citizenship) 
-                .NotEmpty().WithMessage("La ciudadanía es requerida.")
-                .Length(1, 100).WithMessage("La ciudadanía debe tener entre 1 y 100 caracteres.");
+                .NotEmpty().WithMessage("La ciudadanía es requerida.");
 
             RuleFor(expression: request => request.CirculationType)
-                .NotEmpty().WithMessage("La circulación es requerida.")
-                .Length(1, 100).WithMessage("La circulación debe tener entre 1 y 100 caracteres.");
+                .NotEmpty().WithMessage("La circulación es requerida.");
 
             RuleFor(expression: request => request.CirculationDate)
                 .NotEmpty().WithMessage("La fecha de circulación es requerida.");
@@ -37,14 +35,13 @@ public class UpdateOperationalCirculationCommandValidator : AbstractValidator<Up
                 .Length(1, 50).WithMessage("La sección debe tener entre 1 y 50 caracteres.");
 
             RuleFor(expression: request => request.Organ)
-                .NotEmpty().WithMessage("El órgano es requerida.")
-                .Length(1, 100).WithMessage("El órgano debe tener entre 1 y 100 caracteres.");
+                .NotEmpty().WithMessage("El órgano es requerida.");
 
             RuleFor(expression: request => request.Official)
                 .NotEmpty().WithMessage("El oficial es requerido.")
                 .Length(1, 100).WithMessage("El oficial debe tener entre 1 y 100 caracteres.");
 
-            RuleFor(expression: request => request.ExpirationDate)
+            RuleFor(expression: request => request.Expiration)
                 .NotEmpty().WithMessage("La fecha de expiración es requerida.");
 
             RuleFor(expression: request => request.Instruction)

@@ -1,15 +1,16 @@
-using Application.DTOs.OperationalCirculations;
-using Application.Interfaces;
+using Shared.DTOs;
+using Shared.DTOs.OperationalCirculations;
+using Shared.Interfaces;
 
 namespace Application.UseCases.OperationalCirculations.Commands.Create;
 
-public record CreateOperationalCirculationCommand(CreateOperationalCirculationRequest CreateOperationalCirculationRequest) : IRequest<ErrorOr<Unit>>
+public record CreateOperationalCirculationCommand(CirculationRequest CirculationRequest) : IRequest<ServiceResponse<ErrorOr<Unit>>>
 {
-    internal sealed class CreateOperationalCirculationCommandHandler(IOperationalCirculationService service) : IRequestHandler<CreateOperationalCirculationCommand, ErrorOr<Unit>>
+    internal sealed class CreateOperationalCirculationCommandHandler(ICirculationService service) : IRequestHandler<CreateOperationalCirculationCommand, ServiceResponse<ErrorOr<Unit>>>
     {
-        public async Task<ErrorOr<Unit>> Handle(CreateOperationalCirculationCommand request, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ErrorOr<Unit>>> Handle(CreateOperationalCirculationCommand request, CancellationToken cancellationToken)
         {
-            return await service.Add(request.CreateOperationalCirculationRequest);
+            return await service.CreateAsync(request.CirculationRequest);
         }
     }
 }

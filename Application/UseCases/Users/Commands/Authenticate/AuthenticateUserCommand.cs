@@ -1,13 +1,14 @@
-using Application.DTOs.Users;
-using Application.Interfaces;
+using Shared.DTOs;
+using Shared.DTOs.Users;
+using Shared.Interfaces;
 
 namespace Application.UseCases.Users.Commands.Authenticate;
 
-public record AuthenticateUserCommand(AuthenticationRequest AuthenticationRequest, string IpAddress) : IRequest<AuthenticationResponse>
+public record AuthenticateUserCommand(AuthenticationRequest AuthenticationRequest, string IpAddress) : IRequest<ServiceResponse<AuthenticationResponse>>
 {
-    internal sealed class AuthenticateUserCommandHandler(IUserService service) : IRequestHandler<AuthenticateUserCommand, AuthenticationResponse>
+    internal sealed class AuthenticateUserCommandHandler(IUserService service) : IRequestHandler<AuthenticateUserCommand, ServiceResponse<AuthenticationResponse>>
     {
-        public async Task<AuthenticationResponse> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<AuthenticationResponse>> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
         {
             return await service.AuthenticateAsync(request: request.AuthenticationRequest, request.IpAddress);
         }

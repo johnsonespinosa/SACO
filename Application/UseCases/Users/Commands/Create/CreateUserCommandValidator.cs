@@ -1,8 +1,8 @@
-using Application.DTOs.Users;
+using Shared.DTOs.Users;
 
 namespace Application.UseCases.Users.Commands.Create;
 
-public class CreateUserCommandValidator : AbstractValidator<CreateUserRequest>
+public class CreateUserCommandValidator : AbstractValidator<UserRequest>
 {
     public CreateUserCommandValidator()
     {
@@ -22,7 +22,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserRequest>
             .NotEmpty().WithMessage("Se requiere contraseña.")
             .MinimumLength(6).WithMessage("La contraseña debe tener al menos 6 caracteres.");
 
-        RuleFor(expression: request => request.ConfirmPassword)
+        RuleFor(expression: request => request.PasswordConfirm)
             .Equal(expression: request => request.Password).WithMessage("Las contraseñas no coinciden.");
     }
 }

@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace Application.Specifications;
 
-public sealed class GetAllOperationalCirculationsSpecification : Specification<OperationalCirculation>
+public sealed class GetAllOperationalCirculationsSpecification : Specification<Circulation>
 {
     public GetAllOperationalCirculationsSpecification(string filterRequest)
     {

@@ -1,12 +1,13 @@
-using Application.Interfaces;
+using Shared.DTOs;
+using Shared.Interfaces;
 
 namespace Application.UseCases.Users.Commands.Delete;
 
-public record DeleteUserCommand(string Id) : IRequest<ErrorOr<Unit>>
+public record DeleteUserCommand(string Id) : IRequest<ServiceResponse<ErrorOr<Unit>>>
 {
-    internal sealed class DeleteUserCommandHandler(IUserService service) : IRequestHandler<DeleteUserCommand, ErrorOr<Unit>>
+    internal sealed class DeleteUserCommandHandler(IUserService service) : IRequestHandler<DeleteUserCommand, ServiceResponse<ErrorOr<Unit>>>
     {
-        public async Task<ErrorOr<Unit>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ErrorOr<Unit>>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
             return await service.DeleteAsync(request.Id);
         }
