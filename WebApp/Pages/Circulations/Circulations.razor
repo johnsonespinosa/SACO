@@ -1,0 +1,167 @@
+@page "/circulaciones"
+@attribute [Authorize(Policy = "CirculationManagement")]
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <MudPaper Elevation="3" Class="pa-6 ma-4">
+        <MudGrid>
+            <!-- Encabezado y botón para nueva circulación -->
+            <MudItem xs="12" Class="d-flex justify-space-between align-center">
+                <MudText Typo="Typo.h4" Class="mb-4">Gestión de Circulaciones</MudText>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Success"
+                           StartIcon="@Icons.Material.Filled.Add"
+                           Size="Size.Large"
+                           Class="ml-auto"
+                           OnClick="OpenModalNewCirculation">
+                    Nueva Circulación
+                </MudButton>
+            </MudItem>
+
+            <!-- Tabla de circulaciones con búsqueda -->
+            <MudItem xs="12">
+                <MudDataGrid @ref="_dataGrid"
+                             T="CirculationDto"
+                             ServerData="ServerReload"
+                             Filterable="false">
+                    <ToolBarContent>
+                        <MudSpacer />
+                        <MudTextField T="string"
+                                      ValueChanged="OnSearch"
+                                      Placeholder="Buscar circulación"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      IconSize="Size.Medium" Class="mt-0" />
+                    </ToolBarContent>
+                    <Columns>
+                        <!-- Columna Nombre -->
+                        <PropertyColumn Property="dto => dto.FirstName"
+                                        Title="Nombre" />
+
+                        <!-- Columna Apellido -->
+                        <PropertyColumn Property="dto => dto.LastName1"
+                                        Title="Apellido" />
+
+                        <!-- Columna Fecha Nacimiento -->
+                        <PropertyColumn Property="dto => dto.BirthDate"
+                                        Title="F.Nac" />
+
+                        <!-- Columna Tipo Circulación -->
+                        <PropertyColumn Property="dto => dto.CirculationType.Abbreviation"
+                                        Title="T.Cir" />
+
+                        <!-- Columna Fecha de la Circulación -->
+                        <PropertyColumn Property="dto => dto.CirculationDate"
+                                        Title="F.Cir" />
+
+                        <!-- Columna Acciones -->
+                        <TemplateColumn Title="Acciones" TextAlignment="TextAlignment.Right">
+                            <CellTemplate>
+                                <MudStack Row="true" Spacing="0" Class="pa-2">
+                                    <!-- Botón Editar -->
+                                    <MudButton Variant="Variant.Filled"
+                                               Color="Color.Primary"
+                                               StartIcon="@Icons.Material.Filled.Edit"
+                                               OnClick="@(() => OpenModalEditCirculation(context.Item))"
+                                               Class="white-text">
+                                        Editar
+                                    </MudButton>
+
+                                    <!-- Botón Eliminar -->
+                                    <MudButton Variant="Variant.Filled"
+                                               Color="Color.Error"
+                                               StartIcon="@Icons.Material.Filled.Delete"
+                                               OnClick="@(() => DeleteCirculation(context.Item))"
+                                               Class="white-text">
+                                        Eliminar
+                                    </MudButton>
+                                </MudStack>
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+                    <PagerContent>
+                        <MudDataGridPager T="CirculationDto" />
+                    </PagerContent>
+                </MudDataGrid>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private MudDataGrid<CirculationDto> _dataGrid = new();
+    private string _filter = "";
+    
+    private async Task<GridData<CirculationDto>> ServerReload(GridState<CirculationDto> state)
+    {
+        var pagination = new PaginationDto
+        {
+            Filter = _filter,
+            PageNumber = state.Page,
+            PageSize = state.PageSize
+        };
+            
+        var result = await CirculationService.GetAllAsync(pagination);
+            
+        var data = result.Value.Items;
+
+        return new GridData<CirculationDto>
+        {
+            TotalItems = result.Value.TotalItems,
+            Items = data.ToList()
+        };
+    }
+    
+    private async Task OnSearch(string filter)
+    {
+        _filter = filter;
+        await _dataGrid.ReloadServerData();
+    }
+
+    private async Task OpenModalNewCirculation()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Large };
+        var dialog = await DialogService.ShowAsync<MdCreateCirculation>("Nueva Circulación", options);
+        var result = await dialog.Result;
+
+        if (!result!.Canceled)
+            await _dataGrid.ReloadServerData();
+    }
+
+    private async Task OpenModalEditCirculation(CirculationDto circulationDto)
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Large };
+        var parameters = new DialogParameters { ["CirculationUpdate"] = circulationDto };
+        var dialog = await DialogService.ShowAsync<MdUpdateCirculation>("Editar Circulación", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result!.Canceled)
+            await _dataGrid.ReloadServerData();
+    }
+
+    private async Task DeleteCirculation(CirculationDto circulation)
+    {
+        var sweetAlertResult = await SweetAlertService.FireAsync(settings: new SweetAlertOptions
+        {
+            Title = "¿Estás seguro?",
+            Text = $"Eliminar circulación de: {circulation.FirstName} {circulation.LastName1}",
+            Icon = SweetAlertIcon.Warning,
+            ShowCancelButton = true,
+            ConfirmButtonText = "Si, eliminar",
+            CancelButtonText = "No, volver"
+        });
+
+        if (sweetAlertResult.IsConfirmed)
+        {
+            var result = await CirculationService.DeleteAsync(circulation.CirculationId);
+            if (result.IsSuccess)
+            {
+                Snackbar.Add(message: "Circulación eliminada exitosamente", Severity.Success);
+                await _dataGrid.ReloadServerData();
+            }
+            else
+            {
+                Snackbar.Add(message: "Error al eliminar circulación", Severity.Error);
+            }
+        }
+    }
+}

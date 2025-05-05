@@ -1,0 +1,181 @@
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">Editar Circulación</MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <EditForm Model="CirculationUpdate" OnValidSubmit="SubmitForm">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <MudGrid>
+                <!-- Primera fila -->
+                <MudItem xs="12" sm="6" Class="pa-2">
+                    <MudTextField Label="Primer Nombre *"
+                                  @bind-Value="CirculationUpdate.FirstName"
+                                  Required="true" />
+                </MudItem>
+                <MudItem xs="12" sm="6" Class="pa-2">
+                    <MudTextField Label="Segundo Nombre"
+                                  @bind-Value="CirculationUpdate.SecondName" />
+                </MudItem>
+
+                <!-- Segunda fila -->
+                <MudItem xs="12" sm="6" Class="pa-2">
+                    <MudTextField Label="Primer Apellido *"
+                                  @bind-Value="CirculationUpdate.LastName1"
+                                  Required="true" />
+                </MudItem>
+                <MudItem xs="12" sm="6" Class="pa-2">
+                    <MudTextField Label="Segundo Apellido"
+                                  @bind-Value="CirculationUpdate.LastName2" />
+                </MudItem>
+
+                <!-- Tercera fila -->
+                <MudItem xs="12" sm="6" Class="pa-2">
+                    <MudTextField Label="Fecha Nacimiento (yyyy.MM.dd) *"
+                                  @bind-Value="CirculationUpdate.BirthDate"
+                                  Required="true"
+                                  Pattern="^\d{4}\.\d{2}\.\d{2}$" />
+                </MudItem>
+                <MudItem xs="12" sm="6" Class="pa-2">
+                    <MudSelect Label="Ciudadanía *"
+                               @bind-Value="CirculationUpdate.CitizenshipId"
+                               Required="true">
+                        @foreach (var item in _citizenships)
+                        {
+                            <MudSelectItem Value="@item.CitizenshipId">@item.Abbreviation - @item.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+
+                <!-- Cuarta fila -->
+                <MudItem xs="12" sm="6" Class="pa-2">
+                    <MudSelect Label="Tipo Circulación *"
+                               @bind-Value="CirculationUpdate.CirculationTypeId"
+                               Required="true">
+                        @foreach (var item in _circulationTypes)
+                        {
+                            <MudSelectItem Value="@item.CirculationTypeId">@item.Abbreviation - @item.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="6" Class="pa-2">
+                    <MudSelect Label="Expiración *"
+                               @bind-Value="CirculationUpdate.ExpirationId"
+                               Required="true">
+                        @foreach (var item in _expirations)
+                        {
+                            <MudSelectItem Value="@item.ExpirationId">@item.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+
+                <!-- Quinta fila -->
+                <MudItem xs="12" sm="6" Class="pa-2">
+                    <MudSelect Label="Órgano *"
+                               @bind-Value="CirculationUpdate.OrganId"
+                               Required="true">
+                        @foreach (var item in _organs)
+                        {
+                            <MudSelectItem Value="@item.OrganId">@item.Name</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="6" Class="pa-2">
+                    <MudTextField Label="Sección *"
+                                  @bind-Value="CirculationUpdate.Section"
+                                  Required="true" />
+                </MudItem>
+
+                <!-- Sexta fila -->
+                <MudItem xs="12" sm="6" Class="pa-2">
+                    <MudTextField Label="Oficial *"
+                                  @bind-Value="CirculationUpdate.Official"
+                                  Required="true" />
+                </MudItem>
+                <MudItem xs="12" sm="6" Class="pa-2">
+                    <MudTextField Label="Teléfonos (separados por coma)"
+                                  @bind-Value="_phoneNumbersInput"
+                                  HelperText="Formato internacional: +1234567890" />
+                </MudItem>
+
+                <!-- Séptima fila -->
+                <MudItem xs="12" Class="pa-2">
+                    <MudTextField Label="Instrucción *"
+                                  @bind-Value="CirculationUpdate.Instruction"
+                                  Lines="3"
+                                  Required="true" />
+                </MudItem>
+
+                <!-- Octava fila -->
+                <MudItem xs="12" Class="pa-2">
+                    <MudTextField Label="Observaciones"
+                                  @bind-Value="CirculationUpdate.Observations"
+                                  Lines="3" />
+                </MudItem>
+
+                <!-- Novena fila -->
+                <MudItem xs="12" Class="pa-2">
+                    <MudTextField Label="Motivo de Circulación *"
+                                  @bind-Value="CirculationUpdate.ReasonForCirculation"
+                                  Lines="2"
+                                  Required="true" />
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Text" OnClick="Cancel">Cancelar</MudButton>
+        <MudButton Color="Color.Primary" OnClick="SubmitForm">Guardar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+    [Parameter] public CirculationDto CirculationUpdate { get; set; } = null!;
+    private string _phoneNumbersInput = "";
+    private List<CitizenshipDto> _citizenships = new();
+    private List<CirculationTypeDto> _circulationTypes = new();
+    private List<ExpirationDto> _expirations = new();
+    private List<OrganDto> _organs = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadNomenclatures();
+        _phoneNumbersInput = string.Join(", ", CirculationUpdate.PhoneNumbers);
+    }
+
+    private async Task LoadNomenclatures()
+    {
+        _citizenships = (await CitizenshipService.GetAllAsync()).Value.ToList();
+        _circulationTypes = (await CirculationTypeService.GetAllAsync()).Value.ToList();
+        _expirations = (await ExpirationService.GetAllAsync()).Value.ToList();
+        _organs = (await OrganService.GetAllAsync()).Value.ToList();
+    }
+
+    private async Task SubmitForm()
+    {
+        // Procesar números de teléfono
+        if (!string.IsNullOrWhiteSpace(_phoneNumbersInput))
+        {
+            CirculationUpdate.PhoneNumbers = _phoneNumbersInput.Split(',')
+                .Select(p => p.Trim())
+                .Where(p => !string.IsNullOrWhiteSpace(p))
+                .ToList();
+        }
+
+        var result = await CirculationService.UpdateAsync(CirculationUpdate);
+        if (result.IsSuccess)
+        {
+            Snackbar.Add("Circulación actualizada exitosamente", Severity.Success);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        else
+        {
+            Snackbar.Add("Error al actualizar circulación", Severity.Error);
+        }
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+}

@@ -1,0 +1,141 @@
+@page "/"
+@layout AuthLayout
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="mt-16">
+    <MudPaper Elevation="10" Class="pa-8">
+        <EditForm Model="@_authRequest" OnValidSubmit="HandleLogin">
+            <DataAnnotationsValidator />
+            <ValidationSummary Class="mb-4" />
+
+            <div class="text-center mb-6">
+                <MudIcon Icon="@Icons.Material.Filled.Security" 
+                         Size="Size.Large" 
+                         Color="Color.Primary" 
+                         Class="mb-2" />
+                <MudText Typo="Typo.h4" 
+                         Class="mb-2" 
+                         Color="Color.Primary">
+                    Sistema SACO
+                </MudText>
+                <MudText Typo="Typo.subtitle2" 
+                         Color="Color.Secondary">
+                    Gestión de Circulaciones Operativas
+                </MudText>
+            </div>
+
+            <MudTextField T="string"
+                         Label="Nombre de usuario"
+                         @bind-Value="@_authRequest.UserName"
+                         Variant="Variant.Outlined"
+                         FullWidth="true"
+                         Required="true"
+                         Class="mb-4"
+                         For="@(() => _authRequest.UserName)"
+                         Immediate="true"
+                         Clearable="true">
+                <Adornment Start>
+                    <MudIcon Icon="@Icons.Material.Filled.Person" />
+                </Adornment>
+            </MudTextField>
+
+            <MudTextField T="string"
+                         Label="Contraseña"
+                         @bind-Value="@_authRequest.Password"
+                         Variant="Variant.Outlined"
+                         InputType="@_passwordInput"
+                         Adornment="Adornment.End"
+                         AdornmentIcon="@_passwordInputIcon"
+                         OnAdornmentClick="TogglePasswordVisibility"
+                         FullWidth="true"
+                         Required="true"
+                         Class="mb-4"
+                         For="@(() => _authRequest.Password)"
+                         Immediate="true">
+                <Adornment Start>
+                    <MudIcon Icon="@Icons.Material.Filled.Lock" />
+                </Adornment>
+            </MudTextField>
+
+            <MudButton ButtonType="ButtonType.Submit"
+                      Variant="Variant.Filled"
+                      Color="Color.Primary"
+                      FullWidth="true"
+                      Size="Size.Large"
+                      Class="mt-2"
+                      Disabled="@_isLoading">
+                Iniciar Sesión
+                @if (_isLoading)
+                {
+                    <MudProgressCircular Size="Size.Small"
+                                        Color="Color.Primary"
+                                        Class="ml-2" />
+                }
+            </MudButton>
+
+            <div class="mt-4 text-center">
+                <MudText Typo="Typo.body2" Class="mr-2">
+                    ¿Problemas para acceder?
+                </MudText>
+                <MudLink Href="/contacto" 
+                         Typo="Typo.body2" 
+                         Color="Color.Primary">
+                    Contacte al administrador
+                </MudLink>
+            </div>
+        </EditForm>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private readonly AuthRequest _authRequest = new();
+    private bool _isLoading;
+    private bool _passwordVisibility;
+    private InputType _passwordInput = InputType.Password;
+    private string _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Verificar si ya hay una sesión guardada
+        var sessionResult = await AuthService.GetUserSession();
+        if (sessionResult.IsSuccess)
+        {
+            NavigationManager.NavigateTo("/circulaciones");
+        }
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        _passwordVisibility = !_passwordVisibility;
+        _passwordInput = _passwordVisibility ? InputType.Text : InputType.Password;
+        _passwordInputIcon = _passwordVisibility
+            ? Icons.Material.Filled.Visibility 
+            : Icons.Material.Filled.VisibilityOff;
+    }
+
+    private async Task HandleLogin()
+    {
+        _isLoading = true;
+        
+        var result = await AuthService.Authenticate(_authRequest);
+
+        _isLoading = false;
+
+        if (result.IsSuccess)
+        {
+            // Notificar cambio de estado de autenticación
+            await ((JwtAuthenticationStateProvider)AuthStateProvider).GetAuthenticationStateAsync();
+            
+            Snackbar.Add("Bienvenido al Sistema SACO", Severity.Success);
+            NavigationManager.NavigateTo("/circulaciones");
+        }
+        else
+        {
+            var errorMessage = result.Errors.FirstOrDefault()?.Detail ?? "Credenciales inválidas";
+            Snackbar.Add(errorMessage, Severity.Error);
+        }
+    }
+}

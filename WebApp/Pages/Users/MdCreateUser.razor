@@ -1,0 +1,58 @@
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">Nuevo Usuario</MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <EditForm Model="@_userCreate" OnValidSubmit="SubmitForm">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <MudTextField Label="Email"
+                          @bind-Value="_userCreate.Email"
+                          Required="true"
+                          RequiredError="El email es requerido" />
+
+            <MudTextField Label="Nombre de Usuario"
+                          @bind-Value="_userCreate.UserName"
+                          Required="true"
+                          Class="mt-4" />
+
+            <MudTextField Label="Contraseña"
+                          @bind-Value="_userCreate.Password"
+                          Required="true"
+                          Class="mt-4" />
+
+            <MudTextField Label="Confirmar Contraseña"
+                          @bind-Value="_userCreate.PasswordConfirm"
+                          Required="true"
+                          Class="mt-4" />
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Text" OnClick="Cancel">Cancelar</MudButton>
+        <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit">Guardar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+
+    // Modelos específicos para cada operación
+    private readonly UserCreateDto _userCreate = new();
+
+    private async Task SubmitForm()
+    {
+        var result = await UserService.CreateAsync(_userCreate);
+        if (result.IsSuccess)
+        {
+            Snackbar.Add(message: "Usuario registrado exitosamente", Severity.Success);
+        }
+        else
+        {
+            Snackbar.Add(message: "Error al registrar usuario", Severity.Error);
+        }
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+}

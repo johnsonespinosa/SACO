@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AspNetCore.HealthChecks.Oracle" Version="8.0.1" />
+        <PackageReference Include="EntityFrameworkCore.Exceptions.Oracle" Version="8.1.3" />
+      <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="8.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.36" />
+        <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.36" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.36" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.36">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.36" />
+      <PackageReference Include="Oracle.EntityFrameworkCore" Version="7.21.9" />
+      <PackageReference Include="Polly" Version="8.5.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Application\Application.csproj" />
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+
+</Project>

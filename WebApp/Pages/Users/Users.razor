@@ -1,0 +1,160 @@
+@page "/usuarios"
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <MudPaper Elevation="3" Class="pa-6 ma-4">
+        <MudGrid>
+            <!-- Botón para agregar nuevo usuario -->
+            <MudItem xs="12" Class="d-flex justify-space-between align-center">
+                <MudText Typo="Typo.h4" Class="mb-4">Gestión de Usuarios</MudText>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Success"
+                           StartIcon="@Icons.Material.Filled.PersonAdd"
+                           Size="Size.Large"
+                           Class="ml-auto"
+                           OnClick="OpenModalNewUser">
+                    Nuevo Usuario
+                </MudButton>
+            </MudItem>
+
+            <!-- Tabla de usuarios con búsqueda -->
+            <MudItem xs="12">
+                <MudDataGrid @ref="_dataGrid"
+                             T="UserDto"
+                             ServerData="ServerReload"
+                             Filterable="false">
+                    <ToolBarContent>
+                        <MudSpacer />
+                        <MudTextField T="string"
+                                      ValueChanged="OnSearch"
+                                      Placeholder="Buscar usuario"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      IconSize="Size.Medium" Class="mt-0" />
+                    </ToolBarContent>
+                    <Columns>
+                        <!-- Columna para el nombre de usuario -->
+                        <PropertyColumn Property="userDto => userDto.UserName"
+                                        Title="Nombre" />
+
+                        <!-- Columna para el email -->
+                        <PropertyColumn Property="userDto => userDto.Email"
+                                        Title="Email" />
+
+                        <!-- Columna para las acciones -->
+                        <TemplateColumn Title="Acciones" TextAlignment="TextAlignment.Right">
+                            <CellTemplate>
+                                <MudStack Row="true" Spacing="0" Class="pa-2">
+                                    <!-- Botón Editar -->
+                                    <MudButton Variant="Variant.Filled"
+                                               Color="Color.Primary"
+                                               StartIcon="@Icons.Material.Filled.Edit"
+                                               OnClick="@(() => OpenModalEditUser(context.Item))"
+                                               Class="white-text">
+                                        Editar
+                                    </MudButton>
+
+                                    <!-- Botón Eliminar -->
+                                    <MudButton Variant="Variant.Filled"
+                                               Color="Color.Error"
+                                               StartIcon="@Icons.Material.Filled.Delete"
+                                               OnClick="@(() => DeleteUser(context.Item))"
+                                               Class="white-text">
+                                        Eliminar
+                                    </MudButton>
+                                </MudStack>
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+                    <PagerContent>
+                        <MudDataGridPager T="UserDto" />
+                    </PagerContent>
+                </MudDataGrid>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private MudDataGrid<UserDto> _dataGrid = new();
+    private string _filter = "";
+    
+    private async Task<GridData<UserDto>> ServerReload(GridState<UserDto> state)
+    {
+        var pagination = new PaginationDto
+        {
+            Filter = _filter,
+            PageNumber = state.Page,
+            PageSize = state.PageSize
+        };
+            
+        var result = await UserService.GetAllAsync(pagination);
+            
+        var data = result.Value.Items;
+
+        return new GridData<UserDto>
+        {
+            TotalItems = result.Value.TotalItems,
+            Items = data.ToList()
+        };
+    }
+    
+    private async Task OnSearch(string filter)
+    {
+        _filter = filter;
+        await _dataGrid.ReloadServerData();
+    }
+
+    private async Task OpenModalNewUser()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var dialog = await DialogService.ShowAsync<MdCreateUser>(title: "Nuevo Usuario", options);
+        var result = await dialog.Result;
+
+        if (!result!.Canceled)
+            await _dataGrid.ReloadServerData();
+    }
+
+    private async Task OpenModalEditUser(UserDto userDto)
+    {
+        var userUpdateDto = new UserUpdateDto
+        {
+            UserName = userDto.UserName,
+            Email = userDto.Email,
+            PhoneNumber = userDto.PhoneNumber,
+        };
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var parameters = new DialogParameters { ["userUpdateDto"] = userUpdateDto };
+        var dialog = await DialogService.ShowAsync<MdUpdateUser>(title: "Editar Usuario", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result!.Canceled)
+            await _dataGrid.ReloadServerData();
+    }
+
+    private async Task DeleteUser(UserDto user)
+    {
+        var sweetAlertResult = await SweetAlertService.FireAsync(settings: new SweetAlertOptions
+        {
+            Title = "¿Estás seguro?",
+            Text = $"Eliminar usuario: {user.UserName}",
+            Icon = SweetAlertIcon.Warning,
+            ShowCancelButton = true,
+            ConfirmButtonText = "Si, eliminar",
+            CancelButtonText = "No, volver"
+        });
+
+        if (sweetAlertResult.IsConfirmed)
+        {
+            var result = await UserService.DeleteAsync(user.Id);
+            if (result.IsSuccess)
+            {
+                Snackbar.Add(message: "Usuario eliminado exitosamente", Severity.Success);
+                await _dataGrid.ReloadServerData();
+            }
+            else
+            {
+                Snackbar.Add(message: "Error al eliminar usuario", Severity.Error);
+            }
+        }
+    }
+}

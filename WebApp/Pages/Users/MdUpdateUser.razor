@@ -1,0 +1,54 @@
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">Editar Usuario</MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <EditForm Model="@UserUpdate" OnValidSubmit="SubmitForm">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <MudTextField Label="Email"
+                          @bind-Value="UserUpdate.Email"
+                          Required="true"
+                          RequiredError="El email es requerido" />
+
+            <MudTextField Label="Nombre de Usuario"
+                          @bind-Value="UserUpdate.UserName"
+                          Required="true"
+                          Class="mt-4" />
+
+            <MudTextField Label="Contraseña Actual"
+                          @bind-Value="UserUpdate.CurrentPassword"
+                          Class="mt-4" />
+
+            <MudTextField Label="Nueva Contraseña"
+                          @bind-Value="UserUpdate.NewPassword"
+                          Class="mt-4" />
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Text" OnClick="Cancel">Cancelar</MudButton>
+        <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit">Guardar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+[CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+[Parameter] public UserUpdateDto UserUpdate { get; set; } = null!;
+
+    private async Task SubmitForm()
+    {
+        var result = await UserService.UpdateAsync(UserUpdate);
+        if (result.IsSuccess)
+        {
+            Snackbar.Add(message: "Usuario actualizado exitosamente", Severity.Success);
+        }
+        else
+        {
+            Snackbar.Add(message: "Error al actualizar el usuario", Severity.Error);
+        }
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+}
