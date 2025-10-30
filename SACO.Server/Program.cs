@@ -6,15 +6,14 @@ using _Imports = SACO.Client._Imports;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add MudBlazor services
-builder.Services.AddMudServices();
-
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
-// Add Infrastructure Layer (Database, Repositories)
+builder.Services.AddMudServices();
+
+// Add Infrastructure Layer (Database, Repositories, Identity)
 builder.Services.AddInfrastructure(builder.Configuration);
 
 // Add Application Layer (MediatR, Services)
@@ -24,7 +23,7 @@ builder.Services.AddApplication();
 builder.Services.AddHttpClient();
 
 // Add API Controllers
-builder.Services.AddControllers(); 
+builder.Services.AddControllers();
 
 // Add Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -36,26 +35,32 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
-    // Enable Swagger in Development
-    app.UseSwagger(); 
-    app.UseSwaggerUI(); 
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 else
 {
-    app.UseExceptionHandler(errorHandlingPath: "/Error", createScopeForErrors: true);
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseAntiforgery();
-app.MapStaticAssets();
+
+// Add Authentication & Authorization middleware
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Map API Controllers
-app.MapControllers(); 
+app.MapControllers();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(_Imports).Assembly);
+
+// Map additional routes for Identity if needed
+app.MapAdditionalIdentityEndpoints();
 
 app.Run();

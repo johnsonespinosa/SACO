@@ -55,15 +55,5 @@ public class CirculationConfiguration : IEntityTypeConfiguration<Circulation>
             .WithMany(d => d.Circulations)
             .HasForeignKey(c => c.DepartmentId)
             .OnDelete(DeleteBehavior.Restrict);
-            
-        builder.HasOne(c => c.CreatorUser)
-            .WithMany(u => u.CreatedCirculations)
-            .HasForeignKey(c => c.CreatorUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-            
-        builder.HasOne(c => c.ValidatorUser)
-            .WithMany(u => u.ValidatedCirculations)
-            .HasForeignKey(c => c.ValidatorUserId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

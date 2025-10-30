@@ -1,14 +1,15 @@
-using SACO.Domain.Common;
+using Microsoft.AspNetCore.Identity;
 using SACO.Domain.Enums;
 
 namespace SACO.Domain.Entities;
 
-public class User : BaseEntity
+public class User: IdentityUser<Guid>
 {
+    // Additional properties specific to our domain
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string UserName { get; set; } = string.Empty;
+    
+    // Specific roles of the SACO system
     public UserType UserType { get; set; }
     
     // Foreign keys
@@ -18,8 +19,10 @@ public class User : BaseEntity
     // Navigation properties
     public Department Department { get; set; } = null!;
     public Organ Organ { get; set; } = null!;
-    public ICollection<Circulation> CreatedCirculations { get; set; } = new List<Circulation>();
-    public ICollection<Circulation> ValidatedCirculations { get; set; } = new List<Circulation>();
+    
+    // Additional audit properties
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public bool IsActive { get; set; } = true;
     
     // Computed property
     public string FullName => $"{FirstName} {LastName}";
