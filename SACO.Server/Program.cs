@@ -60,7 +60,4 @@ app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(_Imports).Assembly);
 
-// Map additional routes for Identity if needed
-app.MapAdditionalIdentityEndpoints();
-
 app.Run();

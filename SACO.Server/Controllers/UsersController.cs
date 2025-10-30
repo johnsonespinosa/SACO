@@ -27,15 +27,15 @@ public class UsersController(IIdentityService identityService) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateUser([FromBody] CreateUserDto dto)
+    public async Task<ActionResult> CreateUser([FromBody] Application.Models.CreateUserRequest request)
     {
         var (result, userId) = await identityService.CreateUserAsync(
-            dto.UserName,
-            dto.Password,
-            dto.Email,
-            dto.FirstName,
-            dto.LastName,
-            dto.UserType);
+            request.UserName,
+            request.Password,
+            request.Email,
+            request.FirstName,
+            request.LastName,
+            request.UserType);
 
         if (result.Succeeded)
         {

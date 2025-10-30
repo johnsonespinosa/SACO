@@ -2,7 +2,7 @@ using SACO.Domain.Enums;
 
 namespace SACO.Application.Models;
 
-public class CreateUserDto
+public class CreateUserRequest
 {
     public string UserName { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;

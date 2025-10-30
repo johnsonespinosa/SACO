@@ -1,10 +1,59 @@
-﻿
+﻿@inject IAuthService AuthService
+@using SACO.Application.Models
+@using SACO.Client.Services
+@implements IDisposable
+
 <MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
-    
-    <MudNavLink Href="weather" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Weather</MudNavLink>
+    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+
+    @if (_currentUser?.IsAuthenticated == true)
+    {
+    <MudNavLink Href="/counter" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
+    <MudNavLink Href="/weather" Icon="@Icons.Material.Filled.WbSunny">Weather</MudNavLink>
     <MudNavLink Href="/api-test" Icon="@Icons.Material.Filled.Api">API Test</MudNavLink>
+
+    @if (_currentUser.Roles.Contains("Admin") || _currentUser.Roles.Contains("Analyst"))
+    {
+    <MudNavLink Href="/circulations" Icon="@Icons.Material.Filled.List">Circulaciones</MudNavLink>
+    }
+
+    <MudDivider Class="my-2" />
+    <MudText Typo="Typo.caption" Class="px-4 py-2 text-disabled">
+        Hola, @_currentUser.FirstName
+    </MudText>
+    <MudNavLink Icon="@Icons.Material.Filled.Logout" OnClick="HandleLogout">
+        Cerrar Sesión
+    </MudNavLink>
+    }
+    else
+    {
+    <MudNavLink Href="/login" Icon="@Icons.Material.Filled.Login">Iniciar Sesión</MudNavLink>
+    <MudNavLink Href="/register" Icon="@Icons.Material.Filled.PersonAdd">Registrarse</MudNavLink>
+    }
 </MudNavMenu>
 
+@code {
+    private CurrentUserResponse? _currentUser;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCurrentUser();
+    }
+
+    private async Task LoadCurrentUser()
+    {
+        _currentUser = await AuthService.GetCurrentUserAsync();
+        StateHasChanged();
+    }
+
+    private async Task HandleLogout()
+    {
+        await AuthService.LogoutAsync();
+        await LoadCurrentUser();
+    }
+
+    public void Dispose()
+    {
+        // Cleanup si es necesario
+    }
+}

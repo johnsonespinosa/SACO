@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
+using SACO.Client.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -9,6 +10,9 @@ builder.Services.AddScoped(_ =>
     { 
         BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) 
     });
+
+// Register authentication services
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddMudServices();
 
