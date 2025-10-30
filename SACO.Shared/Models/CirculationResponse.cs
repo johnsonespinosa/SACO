@@ -1,8 +1,8 @@
 using SACO.Domain.Enums;
 
-namespace SACO.Application.Models;
+namespace SACO.Shared.Models;
 
-public class CirculationDto
+public class CirculationResponse
 {
     public Guid Id { get; set; }
     public string ExpeditionNumber { get; set; } = string.Empty;

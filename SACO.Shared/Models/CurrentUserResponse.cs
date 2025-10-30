@@ -1,6 +1,6 @@
 using SACO.Domain.Enums;
 
-namespace SACO.Application.Models;
+namespace SACO.Shared.Models;
 
 public class CurrentUserResponse
 {

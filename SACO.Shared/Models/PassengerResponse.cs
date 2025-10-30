@@ -1,6 +1,6 @@
-namespace SACO.Application.Models;
+namespace SACO.Shared.Models;
 
-public class PassengerDto
+public class PassengerResponse
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; } = string.Empty;

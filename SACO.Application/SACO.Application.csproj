@@ -21,6 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\SACO.Domain\SACO.Domain.csproj" />
+      <ProjectReference Include="..\SACO.Shared\SACO.Shared.csproj" />
     </ItemGroup>
 
 </Project>

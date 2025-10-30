@@ -1,15 +1,8 @@
 using System.Net.Http.Json;
-using SACO.Application.Models;
+using SACO.Shared.Models;
+using SACO.Shared.Services;
 
 namespace SACO.Client.Services;
-
-public interface IAuthService
-{
-    Task<AuthResponse> LoginAsync(LoginRequest loginRequest);
-    Task<AuthResponse> RegisterAsync(CreateUserRequest registerRequest);
-    Task LogoutAsync();
-    Task<CurrentUserResponse> GetCurrentUserAsync();
-}
 
 public class AuthService(HttpClient httpClient) : IAuthService
 {

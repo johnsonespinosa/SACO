@@ -1,4 +1,4 @@
-namespace SACO.Application.Models;
+namespace SACO.Shared.Models;
 
 public class Result
 {

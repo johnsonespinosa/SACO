@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SACO.Application.Common.Interfaces;
-using SACO.Application.Models;
+using SACO.Shared.Models;
 
 namespace SACO.Controllers;
 
@@ -9,7 +9,7 @@ namespace SACO.Controllers;
 public class PassengersController(IPassengerService passengerService) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<PassengerDto>>> GetPassengers(
+    public async Task<ActionResult<IEnumerable<PassengerResponse>>> GetPassengers(
         [FromQuery] string? firstName,
         [FromQuery] string? lastName,
         [FromQuery] DateTime? birthDate)
@@ -26,7 +26,7 @@ public class PassengersController(IPassengerService passengerService) : Controll
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<PassengerDto>> GetPassenger(Guid id)
+    public async Task<ActionResult<PassengerResponse>> GetPassenger(Guid id)
     {
         try
         {
@@ -41,7 +41,7 @@ public class PassengersController(IPassengerService passengerService) : Controll
     }
 
     [HttpPost]
-    public async Task<ActionResult<PassengerDto>> CreatePassenger(CreatePassengerDto createDto)
+    public async Task<ActionResult<PassengerResponse>> CreatePassenger(CreatePassengerRequest createDto)
     {
         try
         {

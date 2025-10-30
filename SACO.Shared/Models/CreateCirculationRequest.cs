@@ -1,8 +1,8 @@
 using SACO.Domain.Enums;
 
-namespace SACO.Application.Models;
+namespace SACO.Shared.Models;
 
-public class CreateCirculationDto
+public class CreateCirculationRequest
 {
     public CirculationType Type { get; set; }
     public DateTime ExpirationDate { get; set; }

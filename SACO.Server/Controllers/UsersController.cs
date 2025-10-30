@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SACO.Application.Common.Interfaces;
-using SACO.Application.Models;
 using SACO.Domain.Entities;
+using SACO.Shared.Models;
 
 namespace SACO.Controllers;
 
@@ -27,7 +27,7 @@ public class UsersController(IIdentityService identityService) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateUser([FromBody] Application.Models.CreateUserRequest request)
+    public async Task<ActionResult> CreateUser([FromBody] CreateUserRequest request)
     {
         var (result, userId) = await identityService.CreateUserAsync(
             request.UserName,

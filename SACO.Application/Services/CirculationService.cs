@@ -2,10 +2,10 @@ using Ardalis.Specification;
 using AutoMapper;
 using SACO.Application.Common.Interfaces;
 using SACO.Application.Common.Specifications;
-using SACO.Application.Models;
 using SACO.Domain.Entities;
 using SACO.Domain.Enums;
 using SACO.Domain.ValueObjects;
+using SACO.Shared.Models;
 
 namespace SACO.Application.Services;
 
@@ -20,7 +20,7 @@ public class CirculationService : ICirculationService
         _mapper = mapper;
     }
 
-    public async Task<CirculationDto> CreateOperativeCirculationAsync(CreateCirculationDto createDto, Guid userId)
+    public async Task<CirculationResponse> CreateOperativeCirculationAsync(CreateCirculationRequest createDto, Guid userId)
     {
         // Mapear DTO a entidad
         var circulation = _mapper.Map<Circulation>(createDto);
@@ -61,10 +61,10 @@ public class CirculationService : ICirculationService
         
         // Cargar relaciones para el DTO
         await LoadCirculationRelations(circulation);
-        return _mapper.Map<CirculationDto>(circulation);
+        return _mapper.Map<CirculationResponse>(circulation);
     }
 
-    public async Task<CirculationDto> ValidateCirculationAsync(Guid circulationId, Guid validatorUserId)
+    public async Task<CirculationResponse> ValidateCirculationAsync(Guid circulationId, Guid validatorUserId)
     {
         var circulation = await _unitOfWork.Circulations.GetByIdAsync(circulationId);
         if (circulation == null)
@@ -87,10 +87,10 @@ public class CirculationService : ICirculationService
         await _unitOfWork.SaveChangesAsync();
         
         await LoadCirculationRelations(circulation);
-        return _mapper.Map<CirculationDto>(circulation);
+        return _mapper.Map<CirculationResponse>(circulation);
     }
 
-    public async Task<CirculationDto> RejectCirculationAsync(Guid circulationId, Guid validatorUserId, string reason)
+    public async Task<CirculationResponse> RejectCirculationAsync(Guid circulationId, Guid validatorUserId, string reason)
     {
         var circulation = await _unitOfWork.Circulations.GetByIdAsync(circulationId);
         if (circulation == null)
@@ -101,10 +101,10 @@ public class CirculationService : ICirculationService
         await _unitOfWork.SaveChangesAsync();
         
         await LoadCirculationRelations(circulation);
-        return _mapper.Map<CirculationDto>(circulation);
+        return _mapper.Map<CirculationResponse>(circulation);
     }
 
-    public async Task<IEnumerable<CirculationDto>> SearchCirculationsAsync(string? firstName, string? lastName, DateTime? birthDate, CirculationStatus? status)
+    public async Task<IEnumerable<CirculationResponse>> SearchCirculationsAsync(string? firstName, string? lastName, DateTime? birthDate, CirculationStatus? status)
     {
         var spec = new CirculationWithDetailsSpecification(status);
         var circulations = await _unitOfWork.Circulations.ListAsync(spec);
@@ -119,16 +119,16 @@ public class CirculationService : ICirculationService
             ).ToList();
         }
         
-        return _mapper.Map<IEnumerable<CirculationDto>>(circulations);
+        return _mapper.Map<IEnumerable<CirculationResponse>>(circulations);
     }
 
-    public async Task<CirculationDto?> GetCirculationByIdAsync(Guid circulationId)
+    public async Task<CirculationResponse?> GetCirculationByIdAsync(Guid circulationId)
     {
         var spec = new CirculationWithDetailsSpecification();
         spec.Query.Where(c => c.Id == circulationId);
         
         var circulation = await _unitOfWork.Circulations.FirstOrDefaultAsync(spec);
-        return circulation != null ? _mapper.Map<CirculationDto>(circulation) : null;
+        return circulation != null ? _mapper.Map<CirculationResponse>(circulation) : null;
     }
 
     public async Task CheckExpiredCirculationsAsync()

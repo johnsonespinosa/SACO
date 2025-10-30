@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SACO.Application.Common.Interfaces;
-using SACO.Application.Models;
 using SACO.Domain.Enums;
+using SACO.Shared.Models;
 
 namespace SACO.Controllers;
 
@@ -10,7 +10,7 @@ namespace SACO.Controllers;
 public class CirculationsController(ICirculationService circulationService) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CirculationDto>>> GetCirculations(
+    public async Task<ActionResult<IEnumerable<CirculationResponse>>> GetCirculations(
         [FromQuery] string? firstName,
         [FromQuery] string? lastName,
         [FromQuery] DateTime? birthDate,
@@ -34,7 +34,7 @@ public class CirculationsController(ICirculationService circulationService) : Co
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<CirculationDto>> GetCirculation(Guid id)
+    public async Task<ActionResult<CirculationResponse>> GetCirculation(Guid id)
     {
         try
         {
@@ -49,7 +49,7 @@ public class CirculationsController(ICirculationService circulationService) : Co
     }
 
     [HttpPost]
-    public async Task<ActionResult<CirculationDto>> CreateCirculation(CreateCirculationDto createDto)
+    public async Task<ActionResult<CirculationResponse>> CreateCirculation(CreateCirculationRequest createDto)
     {
         try
         {
@@ -65,7 +65,7 @@ public class CirculationsController(ICirculationService circulationService) : Co
     }
 
     [HttpPut("{id:guid}/validate")]
-    public async Task<ActionResult<CirculationDto>> ValidateCirculation(Guid id)
+    public async Task<ActionResult<CirculationResponse>> ValidateCirculation(Guid id)
     {
         try
         {
@@ -81,7 +81,7 @@ public class CirculationsController(ICirculationService circulationService) : Co
     }
 
     [HttpPut("{id:guid}/reject")]
-    public async Task<ActionResult<CirculationDto>> RejectCirculation(Guid id, [FromBody] ValidateCirculationDto rejectDto)
+    public async Task<ActionResult<CirculationResponse>> RejectCirculation(Guid id, [FromBody] ValidateCirculationRequest rejectDto)
     {
         try
         {

@@ -1,14 +1,14 @@
-using SACO.Application.Models;
 using SACO.Domain.Enums;
+using SACO.Shared.Models;
 
 namespace SACO.Application.Common.Interfaces;
 
 public interface ICirculationService
 {
-    Task<CirculationDto> CreateOperativeCirculationAsync(CreateCirculationDto circulation, Guid userId);
-    Task<CirculationDto> ValidateCirculationAsync(Guid circulationId, Guid validatorUserId);
-    Task<CirculationDto> RejectCirculationAsync(Guid circulationId, Guid validatorUserId, string reason);
-    Task<IEnumerable<CirculationDto>> SearchCirculationsAsync(string? firstName, string? lastName, DateTime? birthDate, CirculationStatus? status);
-    Task<CirculationDto?> GetCirculationByIdAsync(Guid circulationId);
+    Task<CirculationResponse> CreateOperativeCirculationAsync(CreateCirculationRequest circulation, Guid userId);
+    Task<CirculationResponse> ValidateCirculationAsync(Guid circulationId, Guid validatorUserId);
+    Task<CirculationResponse> RejectCirculationAsync(Guid circulationId, Guid validatorUserId, string reason);
+    Task<IEnumerable<CirculationResponse>> SearchCirculationsAsync(string? firstName, string? lastName, DateTime? birthDate, CirculationStatus? status);
+    Task<CirculationResponse?> GetCirculationByIdAsync(Guid circulationId);
     Task CheckExpiredCirculationsAsync();
 }

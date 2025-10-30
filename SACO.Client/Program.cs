@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using SACO.Client.Services;
+using SACO.Shared.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 

@@ -2,6 +2,8 @@ using MudBlazor.Services;
 using SACO.Application;
 using SACO.Components;
 using SACO.Infrastructure;
+using SACO.Services;
+using SACO.Shared.Services;
 using _Imports = SACO.Client._Imports;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +30,12 @@ builder.Services.AddControllers();
 // Add Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add HttpContextAccessor for ServerAuthService
+builder.Services.AddHttpContextAccessor();
+
+// Register AuthService for server-side rendering
+builder.Services.AddScoped<IAuthService, ServerAuthService>();
 
 var app = builder.Build();
 

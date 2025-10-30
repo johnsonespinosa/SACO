@@ -1,6 +1,6 @@
-using SACO.Application.Models;
 using SACO.Domain.Entities;
 using SACO.Domain.Enums;
+using SACO.Shared.Models;
 
 namespace SACO.Application.Common.Interfaces;
 

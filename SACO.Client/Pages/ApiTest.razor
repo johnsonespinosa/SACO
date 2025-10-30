@@ -1,5 +1,6 @@
 @page "/api-test"
-@using SACO.Application.Models
+@using SACO.Domain.Enums
+@using SACO.Shared.Models
 @inject HttpClient Http
 
 <PageTitle>SACO - API Test</PageTitle>
@@ -62,7 +63,7 @@
 </MudContainer>
 
 @code {
-    private IEnumerable<CirculationDto>? _circulations;
+    private IEnumerable<CirculationResponse>? _circulations;
     private bool _isLoading;
     private string? _errorMessage;
 
@@ -75,7 +76,7 @@
         try
         {
             // La URL base es la misma para el servidor Blazor
-            var response = await Http.GetFromJsonAsync<IEnumerable<CirculationDto>>("api/circulations");
+            var response = await Http.GetFromJsonAsync<IEnumerable<CirculationResponse>>("api/circulations");
             _circulations = response;
         }
         catch (Exception ex)
@@ -89,14 +90,14 @@
         }
     }
 
-    private Color GetStatusColor(Domain.Enums.CirculationStatus status)
+    private Color GetStatusColor(CirculationStatus status)
     {
         return status switch
         {
-            Domain.Enums.CirculationStatus.Operative => Color.Warning,
-            Domain.Enums.CirculationStatus.Effective => Color.Success,
-            Domain.Enums.CirculationStatus.Expired => Color.Error,
-            Domain.Enums.CirculationStatus.Rejected => Color.Error,
+            CirculationStatus.Operative => Color.Warning,
+            CirculationStatus.Effective => Color.Success,
+            CirculationStatus.Expired => Color.Error,
+            CirculationStatus.Rejected => Color.Error,
         _ => Color.Default
         };
     }

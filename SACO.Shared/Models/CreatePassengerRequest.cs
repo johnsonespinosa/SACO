@@ -1,6 +1,6 @@
-namespace SACO.Application.Models;
+namespace SACO.Shared.Models;
 
-public class CreatePassengerDto
+public class CreatePassengerRequest
 {
     public string FirstName { get; set; } = string.Empty;
     public string? SecondName { get; set; }
