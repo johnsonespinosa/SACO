@@ -12,14 +12,21 @@
     <MudNavLink Href="/weather" Icon="@Icons.Material.Filled.WbSunny">Weather</MudNavLink>
     <MudNavLink Href="/api-test" Icon="@Icons.Material.Filled.Api">API Test</MudNavLink>
 
+    <!-- Nuevo enlace para Circulaciones -->
+    <MudNavLink Href="/circulations" Icon="@Icons.Material.Filled.Search">Búsqueda Circulaciones</MudNavLink>
+
     @if (_currentUser.Roles.Contains("Admin") || _currentUser.Roles.Contains("Analyst"))
     {
-    <MudNavLink Href="/circulations" Icon="@Icons.Material.Filled.List">Circulaciones</MudNavLink>
+    <!-- Futuros enlaces para otras funcionalidades -->
+    @* <MudNavLink Href="/dashboard" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink> *@
     }
 
     <MudDivider Class="my-2" />
     <MudText Typo="Typo.caption" Class="px-4 py-2 text-disabled">
         Hola, @_currentUser.FirstName
+        <MudChip T="string" Color="Color.Primary" Size="Size.Small" Class="ml-2">
+            @_currentUser.UserType
+        </MudChip>
     </MudText>
     <MudNavLink Icon="@Icons.Material.Filled.Logout" OnClick="HandleLogout">
         Cerrar Sesión
@@ -42,8 +49,15 @@
 
     private async Task LoadCurrentUser()
     {
-        _currentUser = await AuthService.GetCurrentUserAsync();
-        StateHasChanged();
+        try
+        {
+            _currentUser = await AuthService.GetCurrentUserAsync();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            _currentUser = new CurrentUserResponse { IsAuthenticated = false };
+        }
     }
 
     private async Task HandleLogout()

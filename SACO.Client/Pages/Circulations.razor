@@ -1,0 +1,313 @@
+@page "/circulations"
+@using SACO.Domain.Enums
+@using SACO.Shared.Models
+@using SACO.Shared.Services
+@inject HttpClient Http
+@inject IAuthService AuthService
+
+<PageTitle>SACO - Búsqueda de Circulaciones</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="my-8">
+    <MudText Typo="Typo.h4" Class="mb-4">Búsqueda de Circulaciones</MudText>
+    
+    @if (_currentUser?.IsAuthenticated != true)
+    {
+        <MudAlert Severity="Severity.Warning" Class="my-4">
+            Debes <MudLink Href="/login">iniciar sesión</MudLink> para acceder a esta funcionalidad.
+        </MudAlert>
+    }
+    else
+    {
+        <!-- Filtros de Búsqueda -->
+        <MudCard Class="mb-4">
+            <MudCardContent>
+                <MudText Typo="Typo.h6" Class="mb-3">Filtros de Búsqueda</MudText>
+                <EditForm Model="@_searchModel" OnValidSubmit="SearchCirculations">
+                    <MudGrid Spacing="  Spacing.Small">
+                        <MudItem xs="12" md="4">
+                            <MudTextField @bind-Value="_searchModel.FirstName" 
+                                         Label="Primer Nombre"
+                                         Variant="Variant.Outlined" />
+                        </MudItem>
+                        <MudItem xs="12" md="4">
+                            <MudTextField @bind-Value="_searchModel.LastName" 
+                                         Label="Primer Apellido"
+                                         Variant="Variant.Outlined" />
+                        </MudItem>
+                        <MudItem xs="12" md="4">
+                            <MudDatePicker @bind-Date="_searchModel.BirthDate"
+                                          Label="Fecha de Nacimiento"
+                                          Variant="Variant.Outlined" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudSelect T="CirculationStatus?" @bind-Value="_searchModel.Status"
+                                      Label="Estado de Circulación"
+                                      Variant="Variant.Outlined">
+                                <MudSelectItem Value="@null">Todas</MudSelectItem>
+                                <MudSelectItem Value="@CirculationStatus.Operative">Operativas</MudSelectItem>
+                                <MudSelectItem Value="@CirculationStatus.Effective">Efectivas</MudSelectItem>
+                                <MudSelectItem Value="@CirculationStatus.Duplicated">Duplicadas</MudSelectItem>
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudSelect T="CirculationType?" @bind-Value="_searchModel.Type"
+                                      Label="Tipo de Circulación"
+                                      Variant="Variant.Outlined">
+                                <MudSelectItem Value="@null">Todos</MudSelectItem>
+                                @foreach (var circulationType in Enum.GetValues<CirculationType>())
+                                {
+                                    <MudSelectItem Value="@circulationType">@circulationType</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" class="d-flex justify-end gap-2">
+                            <MudButton Variant="Variant.Outlined" 
+                                      Color="Color.Secondary" 
+                                      OnClick="ClearSearch"
+                                      StartIcon="@Icons.Material.Filled.Clear">
+                                Limpiar
+                            </MudButton>
+                            <MudButton Variant="Variant.Filled" 
+                                      Color="Color.Primary" 
+                                      ButtonType="ButtonType.Submit"
+                                      StartIcon="@Icons.Material.Filled.Search"
+                                      Disabled="@_isLoading">
+                                Buscar
+                            </MudButton>
+                        </MudItem>
+                    </MudGrid>
+                </EditForm>
+            </MudCardContent>
+        </MudCard>
+
+        <!-- Resultados -->
+        <MudCard>
+            <MudCardContent>
+                @if (_isLoading)
+                {
+                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
+                }
+                else if (_searchPerformed)
+                {
+                    if (_circulations?.Any() == true)
+                    {
+                        <MudText Typo="Typo.h6" Class="mb-3">
+                            Resultados (@_circulations.Count())
+                        </MudText>
+                        
+                        <MudTable Items="@_circulations" Hover="true" Dense="true" Class="my-4">
+                            <HeaderContent>
+                                <MudTh>Expediente</MudTh>
+                                <MudTh>Pasajero</MudTh>
+                                <MudTh>Ciudadanía</MudTh>
+                                <MudTh>Tipo</MudTh>
+                                <MudTh>Estado</MudTh>
+                                <MudTh>Fecha Circulación</MudTh>
+                                <MudTh>Vencimiento</MudTh>
+                                <MudTh>Acciones</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd>@context.ExpeditionNumber</MudTd>
+                                <MudTd>@context.PassengerFullName</MudTd>
+                                <MudTd>@context.PassengerCitizenship</MudTd>
+                                <MudTd>@context.Type</MudTd>
+                                <MudTd>
+                                    <MudChip T="string" Color="@GetStatusColor(context.Status)" Size="Size.Small">
+                                        @GetStatusText(context.Status)
+                                    </MudChip>
+                                </MudTd>
+                                <MudTd>@context.CirculationDate.ToString("dd/MM/yyyy")</MudTd>
+                                <MudTd>@context.ExpirationDate.ToString("dd/MM/yyyy")</MudTd>
+                                <MudTd>
+                                    <MudIconButton Icon="@Icons.Material.Filled.Visibility" 
+                                                  Color="Color.Primary" 
+                                                  Size="Size.Small"
+                                                  OnClick="() => ViewCirculation(context.Id)" />
+                                    @if (_currentUser.Roles.Contains("Analyst") && context.Status == CirculationStatus.Operative)
+                                    {
+                                        <MudIconButton Icon="@Icons.Material.Filled.Check" 
+                                                      Color="Color.Success" 
+                                                      Size="Size.Small"
+                                                      OnClick="() => ValidateCirculation(context.Id)" />
+                                        <MudIconButton Icon="@Icons.Material.Filled.Close" 
+                                                      Color="Color.Error" 
+                                                      Size="Size.Small"
+                                                      OnClick="() => RejectCirculation(context.Id)" />
+                                    }
+                                </MudTd>
+                            </RowTemplate>
+                        </MudTable>
+                    }
+                    else
+                    {
+                        <MudAlert Severity="Severity.Info" Class="my-4">
+                            No se encontraron circulaciones con los criterios de búsqueda especificados.
+                        </MudAlert>
+                    }
+                }
+                else
+                {
+                    <MudAlert Severity="Severity.Info" Class="my-4">
+                        Utilice los filtros para buscar circulaciones. Puede buscar por nombre, apellido, fecha de nacimiento, tipo o estado.
+                    </MudAlert>
+                }
+            </MudCardContent>
+        </MudCard>
+    }
+</MudContainer>
+
+@code {
+    private IEnumerable<CirculationResponse>? _circulations;
+    private bool _isLoading;
+    private bool _searchPerformed;
+    private string? _errorMessage;
+    private CurrentUserResponse? _currentUser;
+
+    private SearchCirculationModel _searchModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _currentUser = await AuthService.GetCurrentUserAsync();
+    }
+
+    private async Task SearchCirculations()
+    {
+        _isLoading = true;
+        _searchPerformed = true;
+        _errorMessage = null;
+        StateHasChanged();
+
+        try
+        {
+            // Construir query string con los filtros
+            var queryParams = new List<string>();
+            
+            if (!string.IsNullOrEmpty(_searchModel.FirstName))
+                queryParams.Add($"firstName={Uri.EscapeDataString(_searchModel.FirstName)}");
+                
+            if (!string.IsNullOrEmpty(_searchModel.LastName))
+                queryParams.Add($"lastName={Uri.EscapeDataString(_searchModel.LastName)}");
+                
+            if (_searchModel.BirthDate.HasValue)
+                queryParams.Add($"birthDate={_searchModel.BirthDate.Value:yyyy-MM-dd}");
+                
+            if (_searchModel.Status.HasValue)
+                queryParams.Add($"status={_searchModel.Status.Value}");
+                
+            if (_searchModel.Type.HasValue)
+                queryParams.Add($"type={_searchModel.Type.Value}");
+
+            var queryString = queryParams.Any() ? $"?{string.Join("&", queryParams)}" : "";
+            var response = await Http.GetFromJsonAsync<IEnumerable<CirculationResponse>>($"api/circulations{queryString}");
+            _circulations = response;
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"Error buscando circulaciones: {ex.Message}";
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private void ClearSearch()
+    {
+        _searchModel = new SearchCirculationModel();
+        _circulations = null;
+        _searchPerformed = false;
+        _errorMessage = null;
+        StateHasChanged();
+    }
+
+    private void ViewCirculation(Guid circulationId)
+    {
+        // Navegar a la vista detallada de la circulación
+        // NavigationManager.NavigateTo($"/circulations/{circulationId}");
+        // Por ahora mostramos un alert
+        // _dialogService.ShowMessageBox("Detalles", $"Ver circulación {circulationId}");
+    }
+
+    private async Task ValidateCirculation(Guid circulationId)
+    {
+        try
+        {
+            var response = await Http.PutAsync($"api/circulations/{circulationId}/validate", null);
+            if (response.IsSuccessStatusCode)
+            {
+                // Recargar los resultados
+                await SearchCirculations();
+                // Mostrar mensaje de éxito
+                // _snackbar.Add("Circulación validada exitosamente", Severity.Success);
+            }
+            else
+            {
+                _errorMessage = "Error al validar la circulación";
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"Error al validar circulación: {ex.Message}";
+        }
+    }
+
+    private async Task RejectCirculation(Guid circulationId)
+    {
+        try
+        {
+            var rejectDto = new { Reason = "Rechazada por el analista" };
+            var response = await Http.PutAsJsonAsync($"api/circulations/{circulationId}/reject", rejectDto);
+            if (response.IsSuccessStatusCode)
+            {
+                // Recargar los resultados
+                await SearchCirculations();
+                // Mostrar mensaje de éxito
+                // _snackbar.Add("Circulación rechazada exitosamente", Severity.Success);
+            }
+            else
+            {
+                _errorMessage = "Error al rechazar la circulación";
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"Error al rechazar circulación: {ex.Message}";
+        }
+    }
+
+    private Color GetStatusColor(CirculationStatus status)
+    {
+        return status switch
+        {
+            CirculationStatus.Operative => Color.Warning,
+            CirculationStatus.Effective => Color.Success,
+            CirculationStatus.Duplicated => Color.Error,
+            CirculationStatus.Expired => Color.Error,
+            CirculationStatus.Rejected => Color.Error,
+            _ => Color.Default
+        };
+    }
+
+    private string GetStatusText(CirculationStatus status)
+    {
+        return status switch
+        {
+            CirculationStatus.Operative => "Operativa",
+            CirculationStatus.Effective => "Efectiva",
+            CirculationStatus.Duplicated => "Duplicada",
+            CirculationStatus.Expired => "Vencida",
+            CirculationStatus.Rejected => "Rechazada",
+            _ => status.ToString()
+        };
+    }
+
+    public class SearchCirculationModel
+    {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public DateTime? BirthDate { get; set; }
+        public CirculationStatus? Status { get; set; }
+        public CirculationType? Type { get; set; }
+    }
+}
