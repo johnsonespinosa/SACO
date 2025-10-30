@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SACO.Shared\SACO.Shared.csproj" />
+    <ProjectReference Include="..\SACO.Application\SACO.Application.csproj" />
   </ItemGroup>
 
 </Project>

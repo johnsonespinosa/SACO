@@ -1,0 +1,103 @@
+@page "/api-test"
+@using SACO.Application.Models
+@inject HttpClient Http
+
+<PageTitle>SACO - API Test</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="my-16">
+    <MudText Typo="Typo.h3" Class="mb-4">API Test - Circulaciones</MudText>
+
+    <MudCard>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               OnClick="LoadCirculations"
+                               StartIcon="@Icons.Material.Filled.Refresh">
+                        Cargar Circulaciones
+                    </MudButton>
+                </MudItem>
+            </MudGrid>
+
+            @if (_isLoading)
+            {
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
+            }
+
+            @if (_errorMessage != null)
+            {
+            <MudAlert Severity="Severity.Error" Class="my-4">
+                @_errorMessage
+            </MudAlert>
+            }
+
+            @if (_circulations != null)
+            {
+            <MudText Typo="Typo.h6" Class="mt-4">Circulaciones (@_circulations.Count())</MudText>
+
+            <MudTable Items="@_circulations" Hover="true" Class="my-4">
+                <HeaderContent>
+                    <MudTh>Número Expediente</MudTh>
+                    <MudTh>Pasajero</MudTh>
+                    <MudTh>Tipo</MudTh>
+                    <MudTh>Estado</MudTh>
+                    <MudTh>Fecha Circulación</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Expediente">@context.ExpeditionNumber</MudTd>
+                    <MudTd DataLabel="Pasajero">@context.PassengerFullName</MudTd>
+                    <MudTd DataLabel="Tipo">@context.Type</MudTd>
+                    <MudTd DataLabel="Estado">
+                        <MudChip T="string" Color="@GetStatusColor(context.Status)" Size="Size.Small">
+                            @context.Status.ToString()
+                        </MudChip>
+                    </MudTd>
+                    <MudTd DataLabel="Fecha">@context.CirculationDate.ToString("dd/MM/yyyy")</MudTd>
+                </RowTemplate>
+            </MudTable>
+            }
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+@code {
+    private IEnumerable<CirculationDto>? _circulations;
+    private bool _isLoading;
+    private string? _errorMessage;
+
+    private async Task LoadCirculations()
+    {
+        _isLoading = true;
+        _errorMessage = null;
+        StateHasChanged();
+
+        try
+        {
+            // La URL base es la misma para el servidor Blazor
+            var response = await Http.GetFromJsonAsync<IEnumerable<CirculationDto>>("api/circulations");
+            _circulations = response;
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"Error cargando circulaciones: {ex.Message}";
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private Color GetStatusColor(Domain.Enums.CirculationStatus status)
+    {
+        return status switch
+        {
+            Domain.Enums.CirculationStatus.Operative => Color.Warning,
+            Domain.Enums.CirculationStatus.Effective => Color.Success,
+            Domain.Enums.CirculationStatus.Expired => Color.Error,
+            Domain.Enums.CirculationStatus.Rejected => Color.Error,
+        _ => Color.Default
+        };
+    }
+}

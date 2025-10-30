@@ -9,15 +9,18 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
     <ProjectReference Include="..\SACO.Application\SACO.Application.csproj" />
     <ProjectReference Include="..\SACO.Client\SACO.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.*" />
     <ProjectReference Include="..\SACO.Infrastructure\SACO.Infrastructure.csproj" />
-    <ProjectReference Include="..\SACO.Shared\SACO.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,8 @@
 using MudBlazor.Services;
-using SACO.Client.Pages;
+using SACO.Application;
 using SACO.Components;
+using SACO.Infrastructure;
+using _Imports = SACO.Client._Imports;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +11,24 @@ builder.Services.AddMudServices();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+// Add Infrastructure Layer (Database, Repositories)
+builder.Services.AddInfrastructure(builder.Configuration);
+
+// Add Application Layer (MediatR, Services)
+builder.Services.AddApplication();
+
+// Add HttpClient for API calls
+builder.Services.AddHttpClient();
+
+// Add API Controllers
+builder.Services.AddControllers(); 
+
+// Add Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -17,22 +36,26 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
+    // Enable Swagger in Development
+    app.UseSwagger(); 
+    app.UseSwaggerUI(); 
 }
 else
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseExceptionHandler(errorHandlingPath: "/Error", createScopeForErrors: true);
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
-
 app.UseAntiforgery();
-
 app.MapStaticAssets();
+
+// Map API Controllers
+app.MapControllers(); 
+
 app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(SACO.Client._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(_Imports).Assembly);
 
 app.Run();

@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SACO.Application", "SACO.Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SACO.Infrastructure", "SACO.Infrastructure\SACO.Infrastructure.csproj", "{5ACC91CD-BFC8-406F-B234-4277C4D9FDF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SACO.Shared", "SACO.Shared\SACO.Shared.csproj", "{CBE7EFB7-2D67-4E97-B34B-FBEC7D495C58}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,18 +82,6 @@ Global
 		{5ACC91CD-BFC8-406F-B234-4277C4D9FDF4}.Release|x64.Build.0 = Release|Any CPU
 		{5ACC91CD-BFC8-406F-B234-4277C4D9FDF4}.Release|x86.ActiveCfg = Release|Any CPU
 		{5ACC91CD-BFC8-406F-B234-4277C4D9FDF4}.Release|x86.Build.0 = Release|Any CPU
-		{CBE7EFB7-2D67-4E97-B34B-FBEC7D495C58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CBE7EFB7-2D67-4E97-B34B-FBEC7D495C58}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CBE7EFB7-2D67-4E97-B34B-FBEC7D495C58}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{CBE7EFB7-2D67-4E97-B34B-FBEC7D495C58}.Debug|x64.Build.0 = Debug|Any CPU
-		{CBE7EFB7-2D67-4E97-B34B-FBEC7D495C58}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{CBE7EFB7-2D67-4E97-B34B-FBEC7D495C58}.Debug|x86.Build.0 = Debug|Any CPU
-		{CBE7EFB7-2D67-4E97-B34B-FBEC7D495C58}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CBE7EFB7-2D67-4E97-B34B-FBEC7D495C58}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CBE7EFB7-2D67-4E97-B34B-FBEC7D495C58}.Release|x64.ActiveCfg = Release|Any CPU
-		{CBE7EFB7-2D67-4E97-B34B-FBEC7D495C58}.Release|x64.Build.0 = Release|Any CPU
-		{CBE7EFB7-2D67-4E97-B34B-FBEC7D495C58}.Release|x86.ActiveCfg = Release|Any CPU
-		{CBE7EFB7-2D67-4E97-B34B-FBEC7D495C58}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
